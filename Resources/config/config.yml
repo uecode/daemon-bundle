@@ -1,0 +1,17 @@
+#UecodeDaemonBundle Configuration Example
+uecode.daemon:
+    daemons:
+        example:
+            appName: example
+            appDir: %kernel.root_dir%
+            appDescription: Example of how to configure the DaemonBundle
+            logLocation: %kernel.logs_dir%/%kernel.environment%.example.log
+            authorName: Aaron Scherer
+            authorEmail: aequasi@gmail.com
+            appPidLocation: %kernel.cache_dir%/example/example.pid
+            sysMaxExecutionTime: 0
+            sysMaxInputTime: 0
+            sysMemoryLimit: 1024M
+            appRunAsGID: 1
+            appRunAsUID: 1
+        minimal: ~
