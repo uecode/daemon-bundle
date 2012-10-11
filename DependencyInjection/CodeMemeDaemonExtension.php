@@ -25,8 +25,8 @@ class UecodeDaemonExtension extends Extension
 		$configuration = new Configuration();
 		//$config = $processor->processConfiguration($configuration, $configs);
 
-		$loader = new Loader\XmlFileLoader( $container, new FileLocator( __DIR__ . '/../Resources/config' ) );
-		$loader->load( 'daemon.xml' );
+		$loader = new Loader\YmlFileLoader( $container, new FileLocator( __DIR__ . '/../Resources/config' ) );
+		$loader->load( 'services.yml' );
 
 		$config = $this->mergeExternalConfig( $configs );
 		$this->_init( $config, $container );
@@ -75,7 +75,7 @@ class UecodeDaemonExtension extends Extension
 		//merges each configured daemon with default configs
 		//and makes sure the pid directory is writable
 		$cacheDir   = $container->getParameter( 'kernel.cache_dir' );
-		$filesystem = $container->get( 'uecode.daemon.filesystem' );
+		$filesystem = new Symfony\Component\Filesystem\Filesystem();
 		foreach ( $config[ 'daemons' ] as $name => $cnf ) {
 			if ( null == $cnf ) {
 				$cnf = array();

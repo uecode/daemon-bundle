@@ -79,7 +79,8 @@ By Default, system daemons have a sensible configuration. If you need to change 
 
 ##Code##
 
-	$daemon = new Daemon($this->getContainer()->getParameter('example.daemon.options'));
+	$daemon = $this->getContainer()->get( 'uecode.daemon' );
+	$daemon->initialize( $this->getContainer()->getParameter( 'example.daemon.options' ) );
     $daemon->start();
 
     while ($daemon->isRunning()) {
