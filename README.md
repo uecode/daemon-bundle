@@ -29,6 +29,9 @@ More info at:
 ##DaemonBundle Config##
 Place Uecode\Daemonbundle in your src directory and do the following:
 
+### composer.json ###
+
+	"uecode/daemon-bundle": "dev-master",
 
 ### appKernel.php ###
 Add The UecodeDaemonBundle to your kernel bootstrap sequence
@@ -37,7 +40,7 @@ Add The UecodeDaemonBundle to your kernel bootstrap sequence
     {
         $bundles = array(
             //...
-            new Uecode\Bundle\UecodeDaemonBundle\UecodeDaemonBundle(),
+            new Uecode\DaemonBundle\UecodeDaemonBundle(),
         );
         //...
 
@@ -73,6 +76,17 @@ By Default, system daemons have a sensible configuration. If you need to change 
                 appRunAsUID: 1000
 
 ##Creating a Daemon##
+
+##Code##
+
+	$daemon = new Daemon($this->getContainer()->getParameter('example.daemon.options'));
+    $daemon->start();
+
+    while ($daemon->isRunning()) {
+        // Daemon Code. I'd suggest putting a service here
+    }
+
+    $daemon->stop();
 
 ##Usage##
 Once you have Daemonized your symfony Console Commands, you can simply run them from the command line like so:
