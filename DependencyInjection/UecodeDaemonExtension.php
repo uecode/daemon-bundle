@@ -21,26 +21,10 @@ class UecodeDaemonExtension extends Extension
 
 	public function load( array $configs, ContainerBuilder $container )
 	{
-		$processor     = new Processor();
-		$configuration = new Configuration();
-		//$config = $processor->processConfiguration($configuration, $configs);
-
 		$loader = new Loader\YmlFileLoader( $container, new FileLocator( __DIR__ . '/../Resources/config' ) );
 		$loader->load( 'services.yml' );
 
-		$config = $this->mergeExternalConfig( $configs );
-		$this->_init( $config, $container );
-	}
-
-	private function mergeExternalConfig( $config )
-	{
-		$mergedConfig = array();
-
-		foreach ( $config as $cnf ) {
-			$mergedConfig = array_merge( $mergedConfig, $cnf );
-		}
-
-		return $mergedConfig;
+		$this->_init( $configs, $container );
 	}
 
 	private function getDefaultConfig( $name, $container )
