@@ -120,11 +120,7 @@ class DaemonService
 
 	public function isRunning()
 	{
-		if ( !System_Daemon::isDying() && $this->_pid != null && $this->_pid == $this->getPid() ) {
-			return System_Daemon::isRunning();
-		} else {
-			return false;
-		}
+		return System_Daemon::isRunning();
 	}
 
 	public function stop()
