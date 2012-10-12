@@ -66,7 +66,7 @@ By Default, system daemons have a sensible configuration. If you need to change 
                 logDir: %kernel.logs_dir%
                 authorName: Aaron Scherer
                 authorEmail: aequasi@gmail.com
-                appPidLocation: %kernel.cache_dir%/daemons/
+                appPidDir: %kernel.cache_dir%/daemons/
                 sysMaxExecutionTime: 0
                 sysMaxInputTime: 0
                 sysMemoryLimit: 1024M
