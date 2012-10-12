@@ -68,6 +68,7 @@ class UecodeDaemonExtension extends Extension
 			}
 
 			$cnf[ 'logLocation' ] = rtrim( $cnf[ 'logDir' ], '/' ) . '/' . $cnf[ 'appName' ] . 'Daemon.log';
+			unset( $cnf[ 'logDir' ] );
 
 			$container->setParameter( $name . '.daemon.options', $cnf );
 		}
