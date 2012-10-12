@@ -63,9 +63,9 @@ class DaemonService
     
     public function getPid()
     {
-	    if( !is_dir( $this->_config[ 'appPidLocation' ] ) )
+	    if( !is_dir( $this->_config[ 'appPidDir' ] ) )
 	    {
-		    mkdir( $this->_config[ 'appPidLocation' ] );
+		    mkdir( $this->_config[ 'appPidDir' ] );
 	    }
 
 	    $file = rtrim( $this->_config['appPidLocation'], '/' ) . '/' . $this->_config[ 'appName' ] . '/' . $this->_config[ 'appName' ] .'.pid';
