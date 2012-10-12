@@ -97,7 +97,6 @@ class DaemonService
 		$this->setConfigs();
 		System_Daemon::start();
 		System_Daemon::info(
-		System_Daemon::info(
 			'{appName} System Daemon Started at %s',
 			date( "F j, Y, g:i a" )
 		);
