@@ -8,6 +8,8 @@ use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Loader;
+use Symfony\Component\Filesystem\Filesystem;
+
 use Uecode\DaemonBundle\UecodeDaemonBundleException;
 
 /**
@@ -21,7 +23,7 @@ class UecodeDaemonExtension extends Extension
 
 	public function load( array $configs, ContainerBuilder $container )
 	{
-		$loader = new Loader\YmlFileLoader( $container, new FileLocator( __DIR__ . '/../Resources/config' ) );
+		$loader = new Loader\YamlFileLoader( $container, new FileLocator( __DIR__ . '/../Resources/config' ) );
 		$loader->load( 'services.yml' );
 
 		$this->_init( $configs, $container );
@@ -59,7 +61,7 @@ class UecodeDaemonExtension extends Extension
 		//merges each configured daemon with default configs
 		//and makes sure the pid directory is writable
 		$cacheDir   = $container->getParameter( 'kernel.cache_dir' );
-		$filesystem = new Symfony\Component\Filesystem\Filesystem();
+		$filesystem = new Filesystem();
 		foreach ( $config[ 'daemons' ] as $name => $cnf ) {
 			if ( null == $cnf ) {
 				$cnf = array();
