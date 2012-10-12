@@ -1223,12 +1223,14 @@ class Daemon
         $appPidLocation = self::opt('appPidLocation');
 
         if (!file_exists($appPidLocation)) {
+	        self::warning( 'Pid File not found' );
             unset($appPidLocation);
             return false;
         }
 
         $pid = self::fileread($appPidLocation);
         if (!$pid) {
+	        self::warning( 'Pid File empty' );
             return false;
         }
 
