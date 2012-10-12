@@ -52,9 +52,10 @@ abstract class ExtendCommand extends ContainerAwareCommand
 			->setName( $this->name )
 			->setDescription( $this->description )
 			->setHelp( $this->help )
-			->addArgument( 'method', InputArgument::REQUIRED, 'start|stop|restart' )
-			->setArguments()
-			->setOptions();
+			->addArgument( 'method', InputArgument::REQUIRED, 'start|stop|restart' );
+
+		$this->setArguments();
+		$this->setOptions();
 	}
 
 	/**
