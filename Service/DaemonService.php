@@ -63,11 +63,18 @@ class DaemonService
     
     public function getPid()
     {
-        if (file_exists($this->_config['appPidLocation'])) {
-            $fh = fopen($this->_config['appPidLocation'], "r");
-            $pid = fread($fh, filesize($this->_config['appPidLocation']));
-            fclose($fh);
-            return trim($pid);
+	    if( !is_dir( $this->_config[ 'appPidLocation' ] ) )
+	    {
+		    mkdir( $this->_config[ 'appPidLocation' ] );
+	    }
+
+	    $file = rtrim( $this->_config['appPidLocation'], '/' ) . '/' . $this->_config[ 'appName' ] . '/' . $this->_config[ 'appName' ] .'.pid';
+
+        if ( file_exists( $file ) ) {
+            $fh = fopen( $file, "r" );
+            $pid = fread( $fh, filesize( $file ) );
+            fclose( $fh );
+            return trim( $pid );
         } else {
             return null;
         }
@@ -149,8 +156,9 @@ class DaemonService
     
     public function stop()
     {
-        if (file_exists($this->_config['appPidLocation'])) {
-            unlink($this->_config['appPidLocation']);
+	    $pid = rtrim( $this->_config['appPidLocation'], '/' ) . '/' . $this->_config[ 'appName' ] . '/' . $this->_config[ 'appName' ] .'.pid';
+        if ( file_exists( $pid ) ) {
+            unlink( $pid );
             System_Daemon::info('{appName} System Daemon Terminated at %s',
                 date("F j, Y, g:i a")
             );
