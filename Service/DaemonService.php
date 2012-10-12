@@ -95,6 +95,14 @@ class DaemonService
 	public function start()
 	{
 		$this->setConfigs();
+
+		System_Daemon::setSigHandler( SIGTERM,
+			function() {
+				System_Daemon::warning( "Received SIGTERM. " );
+				System_Daemon::stop();
+			}
+		);
+
 		System_Daemon::start();
 		System_Daemon::info(
 			'{appName} System Daemon Started at %s',
