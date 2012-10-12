@@ -28,10 +28,44 @@ abstract class ExtendCommand extends ContainerAwareCommand
 	 */
 	protected $container;
 
-	protected function configure()
+	/**
+	 * @var string Command Name
+	 */
+	protected $name;
+
+	/**
+	 * @var string Command Description
+	 */
+	protected $description;
+
+	/**
+	 * @var string Command Help
+	 */
+	protected $help;
+
+	/**
+	 * Configures the command
+	 */
+	final protected function configure()
 	{
-		$this->addArgument( 'method', InputArgument::REQUIRED, 'start|stop|restart' );
+		$this
+			->setName( $this->name )
+			->setDescription( $this->description )
+			->setHelp( $this->help )
+			->addArgument( 'method', InputArgument::REQUIRED, 'start|stop|restart' )
+			->setArguments()
+			->setOptions();
 	}
+
+	/**
+	 * Set the arguments for the command
+	 */
+	protected function setArguments(){}
+
+	/**
+	 * Set the options for the command
+	 */
+	protected function setOptions(){}
 
 	/**
 	 * Grabs the argument data and runs the argument on the daemon
@@ -42,10 +76,6 @@ abstract class ExtendCommand extends ContainerAwareCommand
 	 */
 	final protected function execute( InputInterface $input, OutputInterface $output )
 	{
-		if( !$input->hasArgument( 'method' ) )
-		{
-			throw new \Exception( '`configure()` must call parent::configure()' );
-		}
 		$method = $input->getArgument( 'method' );
 		if ( !in_array( $method, array( 'start', 'stop', 'restart' ) ) ) {
 			throw new \Exception( 'Method must be `start`, `stop`, or `restart`' );

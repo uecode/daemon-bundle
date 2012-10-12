@@ -18,16 +18,21 @@ use \Uecode\DaemonBundle\Service\DaemonService;
  */
 class ExampleCommand extends ExtendCommand
 {
+	protected $name = 'example';
+	protected $description = 'Starts an example Daemon';
+	protected $help = 'Usage: <info>php app/console example start|stop|restart 1 [--sleep|-s 2]</info>';
+
 	/**
 	 * Configures the Command
 	 */
-	protected function configure()
+	protected function setArguments()
 	{
-		$this
-			->setName( 'example' )
-			->setDescription( 'Starts an example Daemon' )
-			->setHelp( 'Usage: <info>php app/console example start|stop|restart</info>' );
-		parent::configure();
+		$this->addArgument( 'debug', InputArgument::OPTIONAL, 'Debug mode?' );
+	}
+
+	protected function setOptions()
+	{
+		$this->addOption( 'sleep', 's', 5, 'How long should we sleep for?' );
 	}
 
 	/**
