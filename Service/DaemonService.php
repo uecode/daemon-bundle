@@ -36,6 +36,7 @@ class DaemonService
 		} else {
 			throw new UecodeDaemonBundleException( 'Daemon instantiated without a config' );
 		}
+		$this->_pid = $this->getPid();
 	}
 
 	private function validateOptions( $options )
