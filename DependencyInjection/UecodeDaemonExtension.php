@@ -26,7 +26,7 @@ class UecodeDaemonExtension extends Extension
 		$loader = new Loader\YamlFileLoader( $container, new FileLocator( __DIR__ . '/../Resources/config' ) );
 		$loader->load( 'services.yml' );
 
-		$config = $container->getParameter( 'uecode.daemon' );
+		$configs = $container->getParameter( 'uecode.daemon' );
 		$this->_init( $configs, $container );
 	}
 
