@@ -63,10 +63,10 @@ By Default, system daemons have a sensible configuration. If you need to change 
                 appName: example
                 appDir: %kernel.root_dir%
                 appDescription: Example of how to configure the DaemonBundle
-                logLocation: %kernel.logs_dir%/%kernel.environment%.example.log
+                logDir: %kernel.logs_dir%
                 authorName: Aaron Scherer
                 authorEmail: aequasi@gmail.com
-                appPidLocation: %kernel.cache_dir%/example/example.pid
+                appPidLocation: %kernel.cache_dir%/daemons/
                 sysMaxExecutionTime: 0
                 sysMaxInputTime: 0
                 sysMemoryLimit: 1024M

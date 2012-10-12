@@ -41,7 +41,8 @@ class UecodeDaemonExtension extends Extension
 				$cnf = array();
 			}
 			try {
-				$filesystem->mkdir( $cacheDir . '/' . $name . '/', 0777 );
+				$pidDir = $cnf[ 'appPidLocation' ];
+				$filesystem->mkdir( $pidDir , 0777 );
 			} catch( UecodeDaemonBundleException $e ) {
 				echo 'UecodeDaemonBundle exception: ', $e->getMessage(), "\n";
 			}
