@@ -153,10 +153,7 @@ class DaemonService
 
 	public function stop()
 	{
-		$pid = rtrim(
-			$this->_config[ 'appPidLocation' ],
-			'/'
-		) . '/' . $this->_config[ 'appName' ] . '/' . $this->_config[ 'appName' ] . '.pid';
+		$pid = $this->getPid();
 		if ( file_exists( $pid ) ) {
 			unlink( $pid );
 			System_Daemon::info(

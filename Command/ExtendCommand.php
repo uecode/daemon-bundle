@@ -6,6 +6,7 @@
 namespace Uecode\DaemonBundle\Command;
 
 use \Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Input\ArgvInput;
 use \Uecode\DaemonBundle\System\Daemon\Exception;
 use \Symfony\Component\Console\Input\InputInterface;
 use \Symfony\Component\Console\Input\InputArgument;
