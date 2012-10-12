@@ -154,6 +154,7 @@ class DaemonService
 
 	public function stop()
 	{
+		System_Daemon::stop();
 		$pid = $this->getPid();
 		if ( file_exists( $pid ) ) {
 			unlink( $pid );
