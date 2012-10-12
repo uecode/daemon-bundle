@@ -120,7 +120,9 @@ class DaemonService
 
 	public function isRunning()
 	{
-		return System_Daemon::isRunning();
+		$running = System_Daemon::isRunning();
+		var_dump( $running );
+		return $running;
 	}
 
 	public function stop()
