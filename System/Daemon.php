@@ -622,7 +622,8 @@ class Daemon
      */
     static public function stop()
     {
-        self::info('Stopping {appName}');
+	    $pid = self::fileread( self::opt( 'appPidLocation' ) );
+        self::info('Stopping {appName} - Process: ' . $pid );
         self::_die(false);
     }
 
@@ -634,7 +635,8 @@ class Daemon
      */
     static public function restart()
     {
-        self::info('Restarting {appName}');
+	    $pid = self::fileread( self::opt( 'appPidLocation' ) );
+	    self::info('Restarting {appName} - Process: ' . $pid );
         self::_die(true);
     }
 
@@ -1408,13 +1410,7 @@ class Daemon
      * @return string
      */
     static public function fileread ($filepath) {
-        $f = fopen($filepath, 'r');
-        if (!$f) {
-            return false;
-        }
-        $data = fread($f, filesize($filepath));
-        fclose($f);
-        return $data;
+        return file_get_contents( $filepath );
     }
 
     /**
@@ -1551,6 +1547,7 @@ class Daemon
     static protected function _die($restart = false)
     {
         if (self::isDying()) {
+	        self::info( 'process already halting' );
             return null;
         }
 
@@ -1559,15 +1556,11 @@ class Daemon
         // privileges
         // || !file_exists(self::opt('appPidLocation'))
         if (!self::isInBackground()) {
-            self::info(
-                'halting current process'
-            );
+            self::info( 'halting current process' );
             die();
         }
 
-        $pid = file_get_contents(
-            Daemon::getOption('appPidLocation')
-        );
+        $pid = self::fileread( self::opt('appPidLocation') );
         @unlink(self::opt('appPidLocation'));
 
         if ($restart) {
