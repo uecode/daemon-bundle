@@ -95,45 +95,22 @@ class DaemonService
 	public function start()
 	{
 		if ( empty( $this->_config ) )
-				{
-					throw new UecodeDaemonBundleException( 'Daemon instantiated without a config' );
-				}
-
+		{
+			throw new UecodeDaemonBundleException( 'Daemon instantiated without a config' );
+		}
 		System_Daemon::setOptions( $this->getConfig() );
 		System_Daemon::start();
-
 		System_Daemon::info(
 			'{appName} System Daemon Started at %s',
 			date( "F j, Y, g:i a" )
 		);
-
 		$this->setPid( $this->getPid() );
-
 	}
 
 	public function restart()
 	{
 		System_Daemon::setOptions( $this->getConfig() );
-		$pid = $this->getPid();
-		System_Daemon::info(
-			'{appName} System Daemon flagged for restart at %s',
-			date( "F j, Y, g:i a" )
-		);
-		$this->stop();
-		exec( "ps ax | awk '{print $1}'", $pids );
-		while ( in_array( $pid, $pids, true ) ) {
-			unset( $pids );
-			exec( "ps ax | awk '{print $1}'", $pids );
-			$this->iterate( 5 );
-		}
-		System_Daemon::info(
-			'{appName} System Daemon Started at %s',
-			date( "F j, Y, g:i a" )
-		);
-
-		$this->start();
-
-
+		System_Daemon::restart();
 	}
 
 	public function iterate( $sec )
@@ -144,9 +121,7 @@ class DaemonService
 	public function isRunning()
 	{
 		if ( !System_Daemon::isDying() && $this->_pid != null && $this->_pid == $this->getPid() ) {
-			System_Daemon::iterate( $this->_interval );
-
-			return true;
+			return System_Daemon::isRunning();
 		} else {
 			return false;
 		}
@@ -155,18 +130,5 @@ class DaemonService
 	public function stop()
 	{
 		System_Daemon::stop();
-		$pid = $this->getPid();
-		if ( file_exists( $pid ) ) {
-			unlink( $pid );
-			System_Daemon::info(
-				'{appName} System Daemon Terminated at %s',
-				date( "F j, Y, g:i a" )
-			);
-		} else {
-			System_Daemon::info(
-				'{appName} System Daemon Stop flag sent at %s',
-				date( "F j, Y, g:i a" )
-			);
-		}
 	}
 }
