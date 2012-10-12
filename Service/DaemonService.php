@@ -29,10 +29,6 @@ class DaemonService
 	 */
 	protected $_daemon;
 
-	public function __construct()
-	{
-	}
-
 	public function initialize( $options )
 	{
 		if( empty( $options ) )

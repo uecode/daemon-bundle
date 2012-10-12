@@ -29,6 +29,9 @@ More info at:
 ##DaemonBundle Config##
 Place Uecode\Daemonbundle in your src directory and do the following:
 
+### composer.json ###
+
+	"uecode/daemon-bundle": "dev-master",
 
 ### appKernel.php ###
 Add The UecodeDaemonBundle to your kernel bootstrap sequence
@@ -37,7 +40,7 @@ Add The UecodeDaemonBundle to your kernel bootstrap sequence
     {
         $bundles = array(
             //...
-            new Uecode\Bundle\UecodeDaemonBundle\UecodeDaemonBundle(),
+            new Uecode\DaemonBundle\UecodeDaemonBundle(),
         );
         //...
 
@@ -60,10 +63,10 @@ By Default, system daemons have a sensible configuration. If you need to change 
                 appName: example
                 appDir: %kernel.root_dir%
                 appDescription: Example of how to configure the DaemonBundle
-                logLocation: %kernel.logs_dir%/%kernel.environment%.example.log
+                logDir: %kernel.logs_dir%
                 authorName: Aaron Scherer
                 authorEmail: aequasi@gmail.com
-                appPidLocation: %kernel.cache_dir%/example/example.pid
+                appPidDir: %kernel.cache_dir%/daemons/
                 sysMaxExecutionTime: 0
                 sysMaxInputTime: 0
                 sysMemoryLimit: 1024M
@@ -73,6 +76,51 @@ By Default, system daemons have a sensible configuration. If you need to change 
                 appRunAsUID: 1000
 
 ##Creating a Daemon##
+
+##Code##
+Make sure you extend \Uecode\DaemonBundle\Command\ExtendCommand
+
+	<?php
+    namespace Uecode\DaemonBundle\Command;
+
+    use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+    use Uecode\DaemonBundle\System\Daemon\Exception;
+    use Symfony\Component\Console\Input\InputInterface;
+    use Symfony\Component\Console\Input\ArrayInput;
+    use Symfony\Component\Console\Output\OutputInterface;
+    use Symfony\Component\DependencyInjection\Container;
+    use \Uecode\DaemonBundle\Service\DaemonService;
+
+    /**
+     * Example Command class
+     */
+    class ExampleCommand extends ExtendCommand
+    {
+    	/**
+    	 * Configures the Command
+    	 */
+    	protected function configure()
+    	{
+    		$this
+    			->setName( 'example' )
+    			->setDescription( 'Starts an example Daemon' )
+    			->setHelp( 'Usage: <info>php app/console example start|stop|restart</info>' )
+    			->addArgument( 'method', InputArgument::REQUIRED, 'start|stop|restart' );
+    	}
+
+    	/**
+    	 * Sample Daemon Logic. Logs `Daemon is running!` every 5 seconds
+    	 * @param \Symfony\Component\Console\Input\InputInterface   $input
+    	 * @param \Symfony\Component\Console\Output\OutputInterface $output
+    	 */
+    	protected function daemonLogic( InputInterface $input, OutputInterface $output )
+    	{
+    		// Do a little logging
+    		$this->container->get( 'logger' )->info( 'Daemon is running!' );
+    		// And then sleep for 5 seconds
+    		$this->daemon->iterate( 5 );
+    	}
+    }
 
 ##Usage##
 Once you have Daemonized your symfony Console Commands, you can simply run them from the command line like so:

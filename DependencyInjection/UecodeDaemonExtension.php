@@ -8,6 +8,8 @@ use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Loader;
+use Symfony\Component\Filesystem\Filesystem;
+
 use Uecode\DaemonBundle\UecodeDaemonBundleException;
 
 /**
@@ -21,53 +23,11 @@ class UecodeDaemonExtension extends Extension
 
 	public function load( array $configs, ContainerBuilder $container )
 	{
-		$processor     = new Processor();
-		$configuration = new Configuration();
-		//$config = $processor->processConfiguration($configuration, $configs);
+		$loader = new Loader\YamlFileLoader( $container, new FileLocator( __DIR__ . '/../Resources/config' ) );
+		$loader->load( 'services.yml' );
 
-		$loader = new Loader\XmlFileLoader( $container, new FileLocator( __DIR__ . '/../Resources/config' ) );
-		$loader->load( 'daemon.xml' );
-
-		$config = $this->mergeExternalConfig( $configs );
-		$this->_init( $config, $container );
-	}
-
-	private function mergeExternalConfig( $config )
-	{
-		$mergedConfig = array();
-
-		foreach ( $config as $cnf ) {
-			$mergedConfig = array_merge( $mergedConfig, $cnf );
-		}
-
-		return $mergedConfig;
-	}
-
-	private function getDefaultConfig( $name, $container )
-	{
-		if ( null === $this->defaultUser && function_exists( 'posix_geteuid' ) ) {
-			$this->defaultUser = posix_geteuid();
-		}
-
-		$defaults = array(
-			'appName'               => $name,
-			'appDir'                => $container->getParameter( 'kernel.root_dir' ),
-			'appDescription'        => 'Uecode System Daemon',
-			'logLocation'           => $container->getParameter(
-				'kernel.cache_dir'
-			) . '/' . $name . '/' . $container->getParameter( 'kernel.environment' ) . '.' . $name . '.daemon.log',
-			'authorName'            => 'Uecode',
-			'authorEmail'           => 'symfony2.kernel@127.0.0.1',
-			'appPidLocation'        => $container->getParameter(
-				'kernel.cache_dir'
-			) . '/' . $name . '/' . $name . '.daemon.pid',
-			'sysMaxExecutionTime'   => 0,
-			'sysMaxInputTime'       => 0,
-			'sysMemoryLimit'        => '1024M',
-			'appRunAsUID'           => $this->defaultUser
-		);
-
-		return $defaults;
+		$configs = $container->getParameter( 'uecode.daemon' );
+		$this->_init( $configs, $container );
 	}
 
 	private function _init( $config, $container )
@@ -75,13 +35,14 @@ class UecodeDaemonExtension extends Extension
 		//merges each configured daemon with default configs
 		//and makes sure the pid directory is writable
 		$cacheDir   = $container->getParameter( 'kernel.cache_dir' );
-		$filesystem = $container->get( 'uecode.daemon.filesystem' );
+		$filesystem = new Filesystem();
 		foreach ( $config[ 'daemons' ] as $name => $cnf ) {
 			if ( null == $cnf ) {
 				$cnf = array();
 			}
 			try {
-				$filesystem->mkdir( $cacheDir . '/' . $name . '/', 0777 );
+				$pidDir = $cnf[ 'appPidDir' ];
+				$filesystem->mkdir( $pidDir , 0777 );
 			} catch( UecodeDaemonBundleException $e ) {
 				echo 'UecodeDaemonBundle exception: ', $e->getMessage(), "\n";
 			}
@@ -107,10 +68,11 @@ class UecodeDaemonExtension extends Extension
 				}
 			}
 
-			$container->setParameter(
-				$name . '.daemon.options',
-				array_merge( $this->getDefaultConfig( $name, $container ), $cnf )
-			);
+			$cnf[ 'logLocation' ] = rtrim( $cnf[ 'logDir' ], '/' ) . '/' . $cnf[ 'appName' ] . 'Daemon.log';
+			$cnf[ 'appPidLocation' ] = rtrim( $cnf[ 'appPidDir' ], '/' ) . '/' . $cnf[ 'appName' ] . '/' . $cnf[ 'appName' ] . '.pid';
+			unset( $cnf[ 'logDir' ], $cnf[ 'appPidDir'] );
+
+			$container->setParameter( $name . '.daemon.options', $cnf );
 		}
 
 	}
