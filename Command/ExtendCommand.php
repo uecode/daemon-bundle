@@ -5,12 +5,12 @@
  */
 namespace Uecode\DaemonBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Uecode\DaemonBundle\System\Daemon\Exception;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\DependencyInjection\Container;
+use \Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use \Uecode\DaemonBundle\System\Daemon\Exception;
+use \Symfony\Component\Console\Input\InputInterface;
+use \Symfony\Component\Console\Input\InputArgument;
+use \Symfony\Component\Console\Output\OutputInterface;
+use \Symfony\Component\DependencyInjection\Container;
 use \Uecode\DaemonBundle\Service\DaemonService;
 
 /**
