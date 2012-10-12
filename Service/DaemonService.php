@@ -110,7 +110,7 @@ class DaemonService
 
 	}
 
-	public function reStart()
+	public function restart()
 	{
 		System_Daemon::setOptions( $this->getConfig() );
 		$pid = $this->getPid();

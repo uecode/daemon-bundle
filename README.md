@@ -78,16 +78,49 @@ By Default, system daemons have a sensible configuration. If you need to change 
 ##Creating a Daemon##
 
 ##Code##
+Make sure you extend \Uecode\DaemonBundle\Command\ExtendCommand
 
-	$daemon = $this->getContainer()->get( 'uecode.daemon' );
-	$daemon->initialize( $this->getContainer()->getParameter( 'example.daemon.options' ) );
-    $daemon->start();
+	<?php
+    namespace Uecode\DaemonBundle\Command;
 
-    while ($daemon->isRunning()) {
-        // Daemon Code. I'd suggest putting a service here
+    use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+    use Uecode\DaemonBundle\System\Daemon\Exception;
+    use Symfony\Component\Console\Input\InputInterface;
+    use Symfony\Component\Console\Input\ArrayInput;
+    use Symfony\Component\Console\Output\OutputInterface;
+    use Symfony\Component\DependencyInjection\Container;
+    use \Uecode\DaemonBundle\Service\DaemonService;
+
+    /**
+     * Example Command class
+     */
+    class ExampleCommand extends ExtendCommand
+    {
+    	/**
+    	 * Configures the Command
+    	 */
+    	protected function configure()
+    	{
+    		$this
+    			->setName( 'example' )
+    			->setDescription( 'Starts an example Daemon' )
+    			->setHelp( 'Usage: <info>php app/console example start|stop|restart</info>' )
+    			->addArgument( 'method', InputArgument::REQUIRED, 'start|stop|restart' );
+    	}
+
+    	/**
+    	 * Sample Daemon Logic. Logs `Daemon is running!` every 5 seconds
+    	 * @param \Symfony\Component\Console\Input\InputInterface   $input
+    	 * @param \Symfony\Component\Console\Output\OutputInterface $output
+    	 */
+    	protected function daemonLogic( InputInterface $input, OutputInterface $output )
+    	{
+    		// Do a little logging
+    		$this->container->get( 'logger' )->info( 'Daemon is running!' );
+    		// And then sleep for 5 seconds
+    		$this->daemon->iterate( 5 );
+    	}
     }
-
-    $daemon->stop();
 
 ##Usage##
 Once you have Daemonized your symfony Console Commands, you can simply run them from the command line like so:
