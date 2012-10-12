@@ -47,7 +47,7 @@ class DaemonService
 
 		if ( !isset( $options[ 'appRunAsGID' ] ) ) {
 			try {
-				$user = posix_getpwuid( $options[ 'appRunAsUID' ] );
+				$user                     = posix_getpwuid( $options[ 'appRunAsUID' ] );
 				$options[ 'appRunAsGID' ] = $user[ 'gid' ];
 			} catch( UecodeDaemonBundleException $e ) {
 				echo 'Exception caught: ', $e->getMessage(), "\n";
@@ -94,12 +94,9 @@ class DaemonService
 
 	public function start()
 	{
-		if ( empty( $this->_config ) )
-		{
-			throw new UecodeDaemonBundleException( 'Daemon instantiated without a config' );
-		}
-		System_Daemon::setOptions( $this->getConfig() );
+		$this->setConfigs();
 		System_Daemon::start();
+		System_Daemon::info(
 		System_Daemon::info(
 			'{appName} System Daemon Started at %s',
 			date( "F j, Y, g:i a" )
@@ -109,24 +106,36 @@ class DaemonService
 
 	public function restart()
 	{
-		System_Daemon::setOptions( $this->getConfig() );
+		$this->setConfigs();
 		System_Daemon::restart();
 	}
 
 	public function iterate( $sec )
 	{
+		$this->setConfigs();
 		System_Daemon::iterate( $sec );
 	}
 
 	public function isRunning()
 	{
+		$this->setConfigs();
 		$running = System_Daemon::isRunning();
 		var_dump( $running );
+
 		return $running;
 	}
 
 	public function stop()
 	{
+		$this->setConfigs();
 		System_Daemon::stop();
+	}
+
+	private function setConfigs()
+	{
+		if ( empty( $this->_config ) ) {
+			throw new UecodeDaemonBundleException( 'Daemon instantiated without a config' );
+		}
+		System_Daemon::setOptions( $this->getConfig() );
 	}
 }
