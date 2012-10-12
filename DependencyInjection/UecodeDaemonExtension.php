@@ -26,34 +26,8 @@ class UecodeDaemonExtension extends Extension
 		$loader = new Loader\YamlFileLoader( $container, new FileLocator( __DIR__ . '/../Resources/config' ) );
 		$loader->load( 'services.yml' );
 
+		$config = $container->getParameter( 'uecode.daemon' );
 		$this->_init( $configs, $container );
-	}
-
-	private function getDefaultConfig( $name, $container )
-	{
-		if ( null === $this->defaultUser && function_exists( 'posix_geteuid' ) ) {
-			$this->defaultUser = posix_geteuid();
-		}
-
-		$defaults = array(
-			'appName'               => $name,
-			'appDir'                => $container->getParameter( 'kernel.root_dir' ),
-			'appDescription'        => 'Uecode System Daemon',
-			'logLocation'           => $container->getParameter(
-				'kernel.cache_dir'
-			) . '/' . $name . '/' . $container->getParameter( 'kernel.environment' ) . '.' . $name . '.daemon.log',
-			'authorName'            => 'Uecode',
-			'authorEmail'           => 'symfony2.kernel@127.0.0.1',
-			'appPidLocation'        => $container->getParameter(
-				'kernel.cache_dir'
-			) . '/' . $name . '/' . $name . '.daemon.pid',
-			'sysMaxExecutionTime'   => 0,
-			'sysMaxInputTime'       => 0,
-			'sysMemoryLimit'        => '1024M',
-			'appRunAsUID'           => $this->defaultUser
-		);
-
-		return $defaults;
 	}
 
 	private function _init( $config, $container )
@@ -93,10 +67,7 @@ class UecodeDaemonExtension extends Extension
 				}
 			}
 
-			$container->setParameter(
-				$name . '.daemon.options',
-				array_merge( $this->getDefaultConfig( $name, $container ), $cnf )
-			);
+			$container->setParameter( $name . '.daemon.options', $cnf );
 		}
 
 	}
