@@ -30,7 +30,7 @@ abstract class ExtendCommand extends ContainerAwareCommand
 
 	protected function configure()
 	{
-		throw new \Exception( sprintf( 'You must implement a `%s` method for your class.', 'configure' ) );
+		$this->addArgument( 'method', InputArgument::REQUIRED, 'start|stop|restart' );
 	}
 
 	/**
@@ -40,8 +40,12 @@ abstract class ExtendCommand extends ContainerAwareCommand
 	 * @return void
 	 * @throws \Exception
 	 */
-	protected function execute( InputInterface $input, OutputInterface $output )
+	final protected function execute( InputInterface $input, OutputInterface $output )
 	{
+		if( !$input->hasArgument( 'method' ) )
+		{
+			throw new \Exception( '`configure()` must call parent::configure()' );
+		}
 		$method = $input->getArgument( 'method' );
 		if ( !in_array( $method, array( 'start', 'stop', 'restart' ) ) ) {
 			throw new \Exception( 'Method must be `start`, `stop`, or `restart`' );

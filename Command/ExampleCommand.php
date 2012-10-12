@@ -26,8 +26,8 @@ class ExampleCommand extends ExtendCommand
 		$this
 			->setName( 'example' )
 			->setDescription( 'Starts an example Daemon' )
-			->setHelp( 'Usage: <info>php app/console example start|stop|restart</info>' )
-			->addArgument( 'method', InputArgument::REQUIRED, 'start|stop|restart' );
+			->setHelp( 'Usage: <info>php app/console example start|stop|restart</info>' );
+		parent::configure();
 	}
 
 	/**
