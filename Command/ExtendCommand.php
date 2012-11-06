@@ -69,6 +69,11 @@ abstract class ExtendCommand extends ContainerAwareCommand
 	 */
 	protected function setOptions(){}
 
+	protected function log( $content = '', $level = 'info' )
+	{
+		$this->container->get( 'logger' )->$level( $content );
+	}
+
 	/**
 	 * Grabs the argument data and runs the argument on the daemon
 	 * @param \Symfony\Component\Console\Input\InputInterface   $input
