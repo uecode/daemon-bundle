@@ -45,6 +45,11 @@ abstract class ExtendCommand extends ContainerAwareCommand
 	protected $help;
 
 	/**
+	 * @var OutputInterface
+	 */
+	private $test = null;
+
+	/**
 	 * Configures the command
 	 */
 	final protected function configure()
@@ -53,7 +58,7 @@ abstract class ExtendCommand extends ContainerAwareCommand
 			->setName( $this->name )
 			->setDescription( $this->description )
 			->setHelp( $this->help )
-			->addArgument( 'method', InputArgument::REQUIRED, 'start|stop|restart' );
+			->addArgument( 'method', InputArgument::REQUIRED, 'start|stop|restart|test' );
 
 		$this->setArguments();
 		$this->setOptions();
@@ -71,6 +76,7 @@ abstract class ExtendCommand extends ContainerAwareCommand
 
 	protected function log( $content = '', $level = 'info' )
 	{
+		if( null !== $this->test ) $this->test->writeln( $content );
 		$this->container->get( 'logger' )->$level( $content );
 	}
 
@@ -84,9 +90,10 @@ abstract class ExtendCommand extends ContainerAwareCommand
 	final protected function execute( InputInterface $input, OutputInterface $output )
 	{
 		$method = $input->getArgument( 'method' );
-		if ( !in_array( $method, array( 'start', 'stop', 'restart' ) ) ) {
-			throw new \Exception( 'Method must be `start`, `stop`, or `restart`' );
+		if ( !in_array( $method, array( 'start', 'stop', 'restart', 'test' ) ) ) {
+			throw new \Exception( 'Method must be `start`, `stop`, `restart`, or `test`' );
 		}
+		$this->test = $method == 'test' ? $output : null;
 		$this->container = $this->getContainer();
 
 		$this->createDaemon( );
@@ -99,7 +106,7 @@ abstract class ExtendCommand extends ContainerAwareCommand
 	final protected function createDaemon( )
 	{
 		$this->daemon = $this->container->get( 'uecode.daemon' );
-		$this->daemon->initialize( $this->container->getParameter( 'spawner.daemon.options' ) );
+		$this->daemon->initialize( $this->container->getParameter( $this->name . '.daemon.options' ) );
 	}
 
 	/**
@@ -158,6 +165,23 @@ abstract class ExtendCommand extends ContainerAwareCommand
 			throw new Exception( 'Daemon is not running!' );
 		}
 		$this->daemon->stop();
+	}
+
+	final protected function test( InputInterface $input, OutputInterface $output )
+	{
+		$this->daemonLogic( $input, $output );
+	}
+
+	/**
+	 * Gets a service by id.
+	 *
+	 * @param string $id The service id
+	 *
+	 * @return object The service
+	 */
+	protected function get($id)
+	{
+		return $this->container->get($id);
 	}
 
 	/**
