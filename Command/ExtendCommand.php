@@ -45,9 +45,19 @@ abstract class ExtendCommand extends ContainerAwareCommand
 	protected $help;
 
 	/**
-	 * @var OutputInterface
+	 * @var bool
 	 */
-	private $test = null;
+	private $test = false;
+
+	/**
+	 * @var InputInterface $input;
+	 */
+	protected $input;
+
+	/**
+	 * @var OutputInterface $output;
+	 */
+	protected $output;
 
 	/**
 	 * Configures the command
@@ -76,7 +86,7 @@ abstract class ExtendCommand extends ContainerAwareCommand
 
 	protected function log( $content = '', $level = 'info' )
 	{
-		if( null !== $this->test ) $this->test->writeln( $content );
+		if( null !== $this->test ) $this->getOutput()->writeln( $content );
 		$this->container->get( 'logger' )->$level( $content );
 	}
 
@@ -93,11 +103,13 @@ abstract class ExtendCommand extends ContainerAwareCommand
 		if ( !in_array( $method, array( 'start', 'stop', 'restart', 'test' ) ) ) {
 			throw new \Exception( 'Method must be `start`, `stop`, `restart`, or `test`' );
 		}
-		$this->test = $method == 'test' ? $output : null;
+		$this->setInput( $input );
+		$this->setOutput( $output );
+		$this->test = $method == 'test' ? true : false;
 		$this->container = $this->getContainer();
 
 		$this->createDaemon( );
-		$this->$method( $input, $output );
+		call_user_func( array( $this, $method ) );
 	}
 
 	/**
@@ -106,16 +118,15 @@ abstract class ExtendCommand extends ContainerAwareCommand
 	final protected function createDaemon( )
 	{
 		$this->daemon = $this->container->get( 'uecode.daemon' );
-		$this->daemon->initialize( $this->container->getParameter( $this->name . '.daemon.options' ) );
+		$daemonName = str_replace( ':', '_', $this->getName() );
+		$this->daemon->initialize( $this->container->getParameter( $daemonName . '.daemon.options' ) );
 	}
 
 	/**
 	 * Starts the Daemon
-	 * @param \Symfony\Component\Console\Input\InputInterface   $input
-	 * @param \Symfony\Component\Console\Output\OutputInterface $output
 	 * @throws \Uecode\DaemonBundle\System\Daemon\Exception
 	 */
-	final protected function start( InputInterface $input, OutputInterface $output )
+	final protected function start( )
 	{
 		if( $this->daemon->isRunning() )
 		{
@@ -125,7 +136,7 @@ abstract class ExtendCommand extends ContainerAwareCommand
 		$this->daemon->start();
 		while ( $this->daemon->isRunning() ) {
 			// Do stuff here
-			$this->daemonLogic( $input, $output );
+			$this->daemonLogic( );
 		}
 		$this->daemon->stop();
 
@@ -133,11 +144,9 @@ abstract class ExtendCommand extends ContainerAwareCommand
 
 	/**
 	 * Restarts the Daemon
-	 * @param \Symfony\Component\Console\Input\InputInterface   $input
-	 * @param \Symfony\Component\Console\Output\OutputInterface $output
 	 * @throws \Uecode\DaemonBundle\System\Daemon\Exception
 	 */
-	final protected function restart( InputInterface $input, OutputInterface $output )
+	final protected function restart( )
 	{
 		if( !$this->daemon->isRunning() )
 		{
@@ -147,18 +156,16 @@ abstract class ExtendCommand extends ContainerAwareCommand
 		$this->daemon->restart();
 		while ( $this->daemon->isRunning() ) {
 			// Do stuff here
-			$this->daemonLogic( $input, $output );
+			$this->daemonLogic( );
 		}
 		$this->daemon->stop();
 	}
 
 	/**
 	 * Stops the Daemon
-	 * @param \Symfony\Component\Console\Input\InputInterface   $input
-	 * @param \Symfony\Component\Console\Output\OutputInterface $output
 	 * @throws \Uecode\DaemonBundle\System\Daemon\Exception
 	 */
-	final protected function stop( InputInterface $input, OutputInterface $output )
+	final protected function stop( )
 	{
 		if( !$this->daemon->isRunning() )
 		{
@@ -167,9 +174,9 @@ abstract class ExtendCommand extends ContainerAwareCommand
 		$this->daemon->stop();
 	}
 
-	final protected function test( InputInterface $input, OutputInterface $output )
+	final protected function test( )
 	{
-		$this->daemonLogic( $input, $output );
+		$this->daemonLogic( );
 	}
 
 	/**
@@ -185,9 +192,41 @@ abstract class ExtendCommand extends ContainerAwareCommand
 	}
 
 	/**
-	 * Sample Daemon Logic. Logs `Daemon is running!` every 5 seconds
-	 * @param \Symfony\Component\Console\Input\InputInterface   $input
-	 * @param \Symfony\Component\Console\Output\OutputInterface $output
+	 * @param InputInterface $input
 	 */
-	abstract protected function daemonLogic( InputInterface $input, OutputInterface $output );
+	public function setInput( InputInterface $input )
+	{
+		$this->input = $input;
+	}
+
+	/**
+	 * @return InputInterface
+	 */
+	public function getInput()
+	{
+		return $this->input;
+	}
+
+	/**
+	 * @param OutputInterface $output
+	 */
+	public function setOutput( OutputInterface $output )
+	{
+		$this->output = $output;
+	}
+
+	/**
+	 * @return OutputInterface
+	 */
+	public function getOutput()
+	{
+		return $this->output;
+	}
+
+
+
+	/**
+	 * Daemon Logic Container
+	 */
+	abstract protected function daemonLogic( );
 }
