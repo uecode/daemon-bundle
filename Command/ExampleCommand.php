@@ -36,7 +36,7 @@ class ExampleCommand extends ExtendCommand
 	 * @param \Symfony\Component\Console\Input\InputInterface   $input
 	 * @param \Symfony\Component\Console\Output\OutputInterface $output
 	 */
-	protected function daemonLogic( InputInterface $input, OutputInterface $output )
+	protected function daemonLogic( )
 	{
 		// Do a little logging
 		$this->container->get( 'logger' )->info( 'Daemon is running!' );
