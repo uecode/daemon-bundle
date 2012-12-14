@@ -27,6 +27,9 @@ More info at:
 
 
 ##DaemonBundle Config##
+
+THIS BUNDLE REQUIRES THE Uecode\CommonBundle (https://github.com/uecode/common-bundle)
+
 Place Uecode\Daemonbundle in your src directory and do the following:
 
 ### composer.json ###
