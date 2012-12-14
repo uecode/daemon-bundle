@@ -56,6 +56,7 @@ By Default, system daemons have a sensible configuration. If you need to change 
     uecode_common:
         daemon:
 
+### config.yml - Extras ###
     app/config.yml
 
     #UecodeDaemonBundle Configuration Example
