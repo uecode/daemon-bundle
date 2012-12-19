@@ -27,6 +27,9 @@ More info at:
 
 
 ##DaemonBundle Config##
+
+THIS BUNDLE REQUIRES THE Uecode\CommonBundle (https://github.com/uecode/common-bundle)
+
 Place Uecode\Daemonbundle in your src directory and do the following:
 
 ### composer.json ###
@@ -48,32 +51,40 @@ Add The UecodeDaemonBundle to your kernel bootstrap sequence
     }
 
 ### config.yml ###
-By Default, system daemons have a sensible configuration. If you need to change any configuration setting , you could do it by adding this configuration to your project config. Only the values that need to be changed should be added, the bundle extension will merge your daemon configs into its defaults.
+By Default, system daemons have a sensible configuration. If you need to change any configuration setting , you could do it by adding this configuration to your project config. Only the values that need to be changed should be added, the bundle extension will merge your daemon configs into its defaults. YOU MUST HAVE AT LEAST THIS PIECE TO WORK
 
     app/config.yml
 
-    #UecodeDaemonBundle Configuration Example
-    code_meme_daemon:
-        daemons:
-            #creates a daemon using default options
-            example: ~
+    #UecodeDaemonBundle Config
+    uecode_common:
+        daemon:
 
-            #an example of all the available options
-            explicitexample:
-                appName: example
-                appDir: %kernel.root_dir%
-                appDescription: Example of how to configure the DaemonBundle
-                logDir: %kernel.logs_dir%
-                authorName: Aaron Scherer
-                authorEmail: aequasi@gmail.com
-                appPidDir: %kernel.cache_dir%/daemons/
-                sysMaxExecutionTime: 0
-                sysMaxInputTime: 0
-                sysMemoryLimit: 1024M
-                appUser: apache
-                appGroup: apache
-                appRunAsGID: 1000
-                appRunAsUID: 1000
+### config.yml - Extras ###
+    app/config.yml
+
+    #UecodeDaemonBundle Configuration Example
+    uecode_common:
+        daemon:
+            daemons:
+                #creates a daemon using default options
+                example: ~
+    
+                #an example of all the available options
+                explicitexample:
+                    appName: example
+                    appDir: %kernel.root_dir%
+                    appDescription: Example of how to configure the DaemonBundle
+                    logDir: %kernel.logs_dir%
+                    authorName: Aaron Scherer
+                    authorEmail: aequasi@gmail.com
+                    appPidDir: %kernel.cache_dir%/daemons/
+                    sysMaxExecutionTime: 0
+                    sysMaxInputTime: 0
+                    sysMemoryLimit: 1024M
+                    appUser: apache
+                    appGroup: apache
+                    appRunAsGID: 1000
+                    appRunAsUID: 1000
 
 ##Creating a Daemon##
 
