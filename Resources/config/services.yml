@@ -1,3 +1,0 @@
-services:
-    uecode.daemon:
-        class: Uecode\DaemonBundle\Service\DaemonService

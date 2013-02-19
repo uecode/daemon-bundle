@@ -3,16 +3,16 @@
  * @author Aaron Scherer <aequasi@gmail.com>
  * @date Oct 12, 2012
  */
-namespace Uecode\DaemonBundle\Command;
+namespace Uecode\Bundle\DaemonBundle\Command;
 
 use \Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Input\ArgvInput;
-use \Uecode\DaemonBundle\System\Daemon\Exception;
 use \Symfony\Component\Console\Input\InputInterface;
 use \Symfony\Component\Console\Input\InputArgument;
 use \Symfony\Component\Console\Output\OutputInterface;
 use \Symfony\Component\DependencyInjection\Container;
-use \Uecode\DaemonBundle\Service\DaemonService;
+
+use \Uecode\Bundle\DaemonBundle\System\Daemon\Exception;
+use \Uecode\Bundle\DaemonBundle\Service\DaemonService;
 
 /**
  * Extendable Command class

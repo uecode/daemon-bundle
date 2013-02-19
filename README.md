@@ -1,6 +1,6 @@
-#UecodeDaemonBundle #
+#Uecode DaemonBundle #
 ##Overview##
-UecodeDaemonBundle is a wrapper for the PEAR library System_Daemon which was created by Kevin Vanzonneveld.
+DaemonBundle is a wrapper for the PEAR library System_Daemon which was created by Kevin Vanzonneveld.
 
 This will enable you to install the symfony bundle and easily convert your Symfony2 console scripts into system daemons.
 
@@ -28,22 +28,22 @@ More info at:
 
 ##DaemonBundle Config##
 
-THIS BUNDLE REQUIRES THE Uecode\CommonBundle (https://github.com/uecode/common-bundle)
+THIS BUNDLE REQUIRES THE Uecode\Bundle\UecodeBundle (https://github.com/uecode/uecode-bundle)
 
-Place Uecode\Daemonbundle in your src directory and do the following:
+Place Uecode\Bundle\Daemonbundle in your src directory and do the following:
 
 ### composer.json ###
 
 	"uecode/daemon-bundle": "dev-master",
 
 ### appKernel.php ###
-Add The UecodeDaemonBundle to your kernel bootstrap sequence
+Add The DaemonBundle to your kernel bootstrap sequence
 
     public function registerBundles()
     {
         $bundles = array(
             //...
-            new Uecode\DaemonBundle\UecodeDaemonBundle(),
+            new Uecode\Bundle\DaemonBundle\DaemonBundle(),
         );
         //...
 
@@ -55,15 +55,15 @@ By Default, system daemons have a sensible configuration. If you need to change 
 
     app/config.yml
 
-    #UecodeDaemonBundle Config
-    uecode_common:
+    #Uecode DaemonBundle Config
+    uecode:
         daemon:
 
 ### config.yml - Extras ###
     app/config.yml
 
     #UecodeDaemonBundle Configuration Example
-    uecode_common:
+    uecode:
         daemon:
             daemons:
                 #creates a daemon using default options
@@ -89,18 +89,19 @@ By Default, system daemons have a sensible configuration. If you need to change 
 ##Creating a Daemon##
 
 ##Code##
-Make sure you extend \Uecode\DaemonBundle\Command\ExtendCommand
+Make sure you extend \Uecode\Bundle\DaemonBundle\Command\ExtendCommand
 
 	<?php
-    namespace Uecode\DaemonBundle\Command;
+    namespace Uecode\Bundle\DaemonBundle\Command;
 
-    use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-    use Uecode\DaemonBundle\System\Daemon\Exception;
-    use Symfony\Component\Console\Input\InputInterface;
-    use Symfony\Component\Console\Input\ArrayInput;
-    use Symfony\Component\Console\Output\OutputInterface;
-    use Symfony\Component\DependencyInjection\Container;
-    use \Uecode\DaemonBundle\Service\DaemonService;
+    use \Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+    use \Symfony\Component\Console\Input\InputInterface;
+    use \Symfony\Component\Console\Input\ArrayInput;
+    use \Symfony\Component\Console\Output\OutputInterface;
+    use \Symfony\Component\DependencyInjection\Container;
+
+    use \Uecode\Bundle\DaemonBundle\System\Daemon\Exception;
+    use \Uecode\Bundle\DaemonBundle\Service\DaemonService;
 
     /**
      * Example Command class

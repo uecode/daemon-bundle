@@ -3,10 +3,10 @@
  * @author Aaron Scherer <aequasi@gmail.com>
  * @date Oct 12, 2012
  */
-namespace Uecode\DaemonBundle\Command;
+namespace Uecode\Bundle\DaemonBundle\Command;
 
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
+use \Symfony\Component\Console\Input\InputInterface;
+use \Symfony\Component\Console\Output\OutputInterface;
 use \Symfony\Component\Console\Input\InputArgument;
 
 /**
@@ -33,8 +33,6 @@ class ExampleCommand extends ExtendCommand
 
 	/**
 	 * Sample Daemon Logic. Logs `Daemon is running!` every 5 seconds
-	 * @param \Symfony\Component\Console\Input\InputInterface   $input
-	 * @param \Symfony\Component\Console\Output\OutputInterface $output
 	 */
 	protected function daemonLogic( )
 	{

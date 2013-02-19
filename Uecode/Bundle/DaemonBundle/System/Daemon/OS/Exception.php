@@ -1,9 +1,9 @@
 <?php
 
-namespace Uecode\DaemonBundle\System\Daemon;
+namespace Uecode\Bundle\DaemonBundle\System\Daemon\OS;
 
 /**
- * An exception thrown by System_Daemon when it encounters an unrecoverable error.
+ * An exception thrown by System_Daemon_OS when it encounters an unrecoverable error.
  *
  * @category  System
  * @package   Daemon
@@ -14,8 +14,7 @@ namespace Uecode\DaemonBundle\System\Daemon;
  * @link      http://trac.plutonia.nl/projects/system_daemon
  * * 
  */
-
-class Exception extends \Exception
+class Exception extends \PEAR_Exception
 {
 
 }

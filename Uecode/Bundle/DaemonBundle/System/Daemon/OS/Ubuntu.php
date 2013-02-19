@@ -1,9 +1,9 @@
 <?php
 
-namespace Uecode\DaemonBundle\System\Daemon\OS;
+namespace Uecode\Bundle\DaemonBundle\System\Daemon\OS;
 
 /**
- * An exception thrown by System_Daemon_OS when it encounters an unrecoverable error.
+ * A System_Daemon_OS driver for Ubuntu. Based on Debian
  *
  * @category  System
  * @package   Daemon
@@ -14,7 +14,16 @@ namespace Uecode\DaemonBundle\System\Daemon\OS;
  * @link      http://trac.plutonia.nl/projects/system_daemon
  * * 
  */
-class Exception extends \PEAR_Exception
-{
 
+use Uecode\Bundle\DaemonBundle\System\Daemon\OS\Debian;
+
+class Ubuntu extends Debian
+{
+    /**
+     * On Linux, a distro-specific version file is often telling us enough
+     *
+     * @var string
+     */
+    protected $_osVersionFile = "/etc/lsb-release";
+    
 }

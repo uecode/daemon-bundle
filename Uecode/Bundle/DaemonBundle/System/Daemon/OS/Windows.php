@@ -1,6 +1,6 @@
 <?php
 
-namespace Uecode\DaemonBundle\System\Daemon\OS;
+namespace Uecode\Bundle\DaemonBundle\System\Daemon\OS;
 
 /**
  * A System_Daemon_OS driver for Windows
@@ -15,7 +15,7 @@ namespace Uecode\DaemonBundle\System\Daemon\OS;
  * * 
  */
 
-use Uecode\DaemonBundle\System\Daemon\OS;
+use Uecode\Bundle\DaemonBundle\System\Daemon\OS;
 
 class Windows extends OS
 {

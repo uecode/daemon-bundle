@@ -1,6 +1,6 @@
 <?php
 
-namespace Uecode\DaemonBundle\System\Daemon;
+namespace Uecode\Bundle\DaemonBundle\System\Daemon;
 
 /**
  * Operating System focussed functionality.

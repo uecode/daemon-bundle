@@ -1,23 +1,20 @@
 <?php
 
-namespace Uecode\DaemonBundle\DependencyInjection;
+namespace Uecode\Bundle\DaemonBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
-use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\Filesystem\Filesystem;
-
-use Uecode\DaemonBundle\UecodeDaemonBundleException;
 
 /**
  * This is the class that loads and manages your bundle configuration
  *
  * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html}
  */
-class UecodeDaemonExtension extends Extension
+class DaemonExtension extends Extension
 {
 	private $defaultUser = null;
 
@@ -34,7 +31,6 @@ class UecodeDaemonExtension extends Extension
 	{
 		//merges each configured daemon with default configs
 		//and makes sure the pid directory is writable
-		$cacheDir   = $container->getParameter( 'kernel.cache_dir' );
 		$filesystem = new Filesystem();
 		foreach ( $config[ 'daemons' ] as $name => $cnf ) {
 			if ( null == $cnf ) {
@@ -43,7 +39,7 @@ class UecodeDaemonExtension extends Extension
 			try {
 				$pidDir = $cnf[ 'appPidDir' ];
 				$filesystem->mkdir( $pidDir , 0777 );
-			} catch( UecodeDaemonBundleException $e ) {
+			} catch( \Exception $e ) {
 				echo 'UecodeDaemonBundle exception: ', $e->getMessage(), "\n";
 			}
 

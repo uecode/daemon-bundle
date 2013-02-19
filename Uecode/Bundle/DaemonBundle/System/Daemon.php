@@ -1,6 +1,6 @@
 <?php
 
-namespace Uecode\DaemonBundle\System;
+namespace Uecode\Bundle\DaemonBundle\System;
 
 /**
  * Daemon. Create daemons with practicle functions
@@ -19,9 +19,9 @@ namespace Uecode\DaemonBundle\System;
  *
  */
 
-use Uecode\DaemonBundle\System\Daemon\Exception;
-use Uecode\DaemonBundle\System\Daemon\Options;
-use Uecode\DaemonBundle\System\Daemon\OS;
+use Uecode\Bundle\DaemonBundle\System\Daemon\Exception;
+use Uecode\Bundle\DaemonBundle\System\Daemon\Options;
+use Uecode\Bundle\DaemonBundle\System\Daemon\OS;
 
 class Daemon
 {

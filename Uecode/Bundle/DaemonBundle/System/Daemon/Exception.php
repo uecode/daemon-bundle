@@ -1,9 +1,9 @@
 <?php
 
-namespace Uecode\DaemonBundle\System\Daemon\OS;
+namespace Uecode\Bundle\DaemonBundle\System\Daemon;
 
 /**
- * A System_Daemon_OS driver for Ubuntu. Based on Debian
+ * An exception thrown by System_Daemon when it encounters an unrecoverable error.
  *
  * @category  System
  * @package   Daemon
@@ -15,15 +15,7 @@ namespace Uecode\DaemonBundle\System\Daemon\OS;
  * * 
  */
 
-use Uecode\DaemonBundle\System\Daemon\OS\Debian; 
-
-class Ubuntu extends Debian
+class Exception extends \Exception
 {
-    /**
-     * On Linux, a distro-specific version file is often telling us enough
-     *
-     * @var string
-     */
-    protected $_osVersionFile = "/etc/lsb-release";
-    
+
 }
