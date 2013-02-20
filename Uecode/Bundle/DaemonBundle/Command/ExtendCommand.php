@@ -72,6 +72,7 @@ abstract class ExtendCommand extends ContainerAwareCommand
 
 		$this->setArguments();
 		$this->setOptions();
+
 	}
 
 	/**
@@ -97,7 +98,7 @@ abstract class ExtendCommand extends ContainerAwareCommand
 	 * @return void
 	 * @throws \Exception
 	 */
-	final protected function execute( InputInterface $input, OutputInterface $output )
+	protected function execute( InputInterface $input, OutputInterface $output )
 	{
 		$method = $input->getArgument( 'method' );
 		if ( !in_array( $method, array( 'start', 'stop', 'restart', 'test' ) ) ) {
