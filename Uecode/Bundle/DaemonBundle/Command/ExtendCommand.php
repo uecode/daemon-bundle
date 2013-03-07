@@ -118,7 +118,7 @@ abstract class ExtendCommand extends ContainerAwareCommand
 	 */
 	final protected function createDaemon( )
 	{
-		$this->daemon = $this->container->get( 'uecode.daemon' );
+		$this->daemon = $this->container->get( 'uecode.daemon_service' );
 		$daemonName = str_replace( ':', '_', $this->getName() );
 		$this->daemon->initialize( $this->container->getParameter( $daemonName . '.daemon.options' ) );
 	}
