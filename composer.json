@@ -20,7 +20,8 @@
 	"require":     {
 		"php":                          ">=5.3.0",
 		"ext-json":                     "*",
-        "uecode/uecode-bundle":         "dev-master"
+       		"uecode/daemon":         "dev-master",
+       		"uecode/uecode-bundle":         "dev-master"
 	},
 	"require-dev": {
 		"symfony/symfony": "dev-master"
