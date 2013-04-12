@@ -19,6 +19,15 @@ use \Uecode\Bundle\DaemonBundle\Service\DaemonService;
  */
 abstract class ExtendCommand extends ContainerAwareCommand
 {
+
+	const EVENT_START = 'EVENT_START';
+
+	const EVENT_CYCLE_START = 'EVENT_CYCLE_START';
+
+	const EVENT_CYCLE_END = 'EVENT_CYCLE_END';
+
+	const EVENT_STOP = 'EVENT_STOP';
+
 	/**
 	 * @var DaemonService $daemon
 	 */
@@ -45,11 +54,6 @@ abstract class ExtendCommand extends ContainerAwareCommand
 	protected $help;
 
 	/**
-	 * @var bool
-	 */
-	private $test = false;
-
-	/**
 	 * @var InputInterface $input;
 	 */
 	protected $input;
@@ -60,9 +64,30 @@ abstract class ExtendCommand extends ContainerAwareCommand
 	protected $output;
 
 	/**
-     * @var array
+	 * @var array
 	 */
 	protected $events;
+
+	/**
+	 * @var bool
+	 */
+	private $test = false;
+
+	/**
+	 * @return InputInterface
+	 */
+	public function getInput()
+	{
+		return $this->input;
+	}
+
+	/**
+	 * @param InputInterface $input
+	 */
+	public function setInput( InputInterface $input )
+	{
+		$this->input = $input;
+	}
 
 	/**
 	 * Configures the command
@@ -77,89 +102,28 @@ abstract class ExtendCommand extends ContainerAwareCommand
 
 		$this->setArguments();
 		$this->setOptions();
-
 	}
 
 	/**
 	 * Set the arguments for the command
 	 */
-	protected function setArguments(){}
+	protected function setArguments()
+	{
+	}
 
 	/**
 	 * Set the options for the command
 	 */
-	protected function setOptions(){}
-
-	/**
-	 * Sets the events for the command
-	 */
-	protected function setEvents(){}
-
-	/**
-	 * Adds an event to the command
-	 *
-	 * @param string $type Type of the event, startup, cycle, or shutdown right now
-	 * @param string $name Name of the event
-	 * @param \Closure|callable $function
-	 *
-	 * @throws \Exception Throws an exception on bad arguments
-	 */
-	protected function addEvent( $type, $name, $function )
+	protected function setOptions()
 	{
-		if( is_callable( $function ) || $function instanceof \Closure ) {
-			if( is_string( $name ) ) {
-				$this->events[$type ][ $name ] = $function;
-			} else {
-				throw new \Exception( "Name passed isn't a string. " );
-			}
-		} else {
-			throw new \Exception( "Function passed is not a callable or a closure. " );
-		}
-	}
-
-	/**
-	 * Gets an array of events for the given type
-	 *
-	 * @param string $type Type of events, startup, cycleStart, cycleEnd, or shutdown right now
-	 *
-	 * @return \Closure[]|callable[]
-	 */
-	protected function getEvents( $type )
-	{
-		return $this->events[ $type ];
-	}
-
-	protected function runEvents( $type )
-	{
-		$this->log( "Finding all {$type} events and running them. " );
-		$events = $this->getEvents( $type );
-		foreach( $events as $name => $event ) {
-			$this->log( "Running the `{$name}` {$type} event. " );
-			$event( $this );
-		}
-	}
-
-	/**
-	 * Removes the named event for a given type.
-	 *
-	 * @param string $type Type of the event, startup, cycleStart, cycleEnd, or shutdown right now
-	 * @param string $name Name of the event
-	 */
-	protected function removeEvent( $type, $name )
-	{
-		unset( $this->events[ $type ][ $name ] );
-	}
-
-	protected function log( $content = '', $level = 'info' )
-	{
-		if( null !== $this->test ) $this->getOutput()->writeln( $content );
-		$this->container->get( 'logger' )->$level( $content );
 	}
 
 	/**
 	 * Grabs the argument data and runs the argument on the daemon
+	 *
 	 * @param \Symfony\Component\Console\Input\InputInterface   $input
 	 * @param \Symfony\Component\Console\Output\OutputInterface $output
+	 *
 	 * @return void
 	 * @throws \Exception
 	 */
@@ -171,124 +135,158 @@ abstract class ExtendCommand extends ContainerAwareCommand
 		}
 		$this->setInput( $input );
 		$this->setOutput( $output );
-		$this->test = $method == 'test' ? true : false;
+		$this->test      = $method == 'test' ? true : false;
 		$this->container = $this->getContainer();
 
-		$this->createDaemon( );
+		$this->createDaemon();
 		call_user_func( array( $this, $method ) );
 	}
 
 	/**
 	 * Creates and Initializes the daemon
 	 */
-	final protected function createDaemon( )
+	final protected function createDaemon()
 	{
 		$this->daemon = $this->container->get( 'uecode.daemon_service' );
-		$daemonName = strtolower( str_replace( ':', '_', $this->getName() ) );
-		if( !$this->container->hasParameter( $daemonName. '.daemon.options' ) ) {
-			throw new \Exception( sprintf( "Couldnt find a daemon for %s", $daemonName. '.daemon.options' ) );
+		$daemonName   = strtolower( str_replace( ':', '_', $this->getName() ) );
+		if ( !$this->container->hasParameter( $daemonName . '.daemon.options' ) ) {
+			throw new \Exception( sprintf( "Couldnt find a daemon for %s", $daemonName . '.daemon.options' ) );
 		}
-		$this->daemon->initialize( $this->container->getParameter( $daemonName. '.daemon.options' ) );
+		$this->daemon->initialize( $this->container->getParameter( $daemonName . '.daemon.options' ) );
+	}
+
+	/**
+	 * Adds an event to the command
+	 *
+	 * @param string            $type Type of the event, EVENT_START, EVENT_CYCLE_START, EVENT_CYCLE_STOP, EVENT_STOP right now
+	 * @param string            $name Name of the event
+	 * @param \Closure|callable $function
+	 *
+	 * @throws \Exception Throws an exception on bad arguments
+	 */
+	protected function addEvent( $type, $name, $function )
+	{
+		if ( is_callable( $function ) || $function instanceof \Closure ) {
+			if ( is_string( $name ) ) {
+				$this->events[ $type ][ $name ] = $function;
+			} else {
+				throw new \Exception( "Name passed isn't a string. " );
+			}
+		} else {
+			throw new \Exception( "Function passed is not a callable or a closure. " );
+		}
+	}
+
+	/**
+	 * Removes the named event for a given type.
+	 *
+	 * @param string $type Type of the event, EVENT_START, EVENT_CYCLE_START, EVENT_CYCLE_STOP, EVENT_STOP right now
+	 * @param string $name Name of the event
+	 */
+	protected function removeEvent( $type, $name )
+	{
+		unset( $this->events[ $type ][ $name ] );
 	}
 
 	/**
 	 * Starts the Daemon
+	 *
 	 * @throws \Uecode\DaemonBundle\System\Daemon\Exception
 	 */
-	final protected function start( )
+	final protected function start()
 	{
-		if( $this->daemon->isRunning() )
-		{
+		if ( $this->daemon->isRunning() ) {
 			throw new Exception( 'Daemon is already running!' );
 		}
 
 		$this->daemon->start();
 
-		$this->runEvents( 'startup' );
+		$this->runEvents( self::EVENT_START );
 
 		while ( $this->daemon->isRunning() ) {
 			// Do stuff here
-			$this->runEvents( 'cycleStart' );
-			$this->daemonLogic( );
-			$this->runEvents( 'cycleEnd' );
+			$this->runEvents( self::EVENT_CYCLE_START );
+			$this->daemonLogic();
+			$this->runEvents( self::EVENT_CYCLE_END );
 		}
-		$this->runEvents( 'shutdown' );
+		$this->runEvents( self::EVENT_STOP );
 		$this->daemon->stop();
-
 	}
 
 	/**
 	 * Restarts the Daemon
+	 *
 	 * @throws \Uecode\DaemonBundle\System\Daemon\Exception
 	 */
-	final protected function restart( )
+	final protected function restart()
 	{
-		if( !$this->daemon->isRunning() )
-		{
+		if ( !$this->daemon->isRunning() ) {
 			throw new Exception( 'Daemon is not running!' );
 		}
 
 		$this->daemon->restart();
-		$this->runEvents( 'startup' );
+		$this->runEvents( self::EVENT_START );
 		while ( $this->daemon->isRunning() ) {
 			// Do stuff here
-			$this->runEvents( 'cycleStart' );
-			$this->daemonLogic( );
-			$this->runEvents( 'cycleEnd' );
+			$this->runEvents( self::EVENT_CYCLE_START );
+			$this->daemonLogic();
+			$this->runEvents( self::EVENT_CYCLE_END );
 		}
-		$this->runEvents( 'shutdown' );
+		$this->runEvents( self::EVENT_STOP );
 		$this->daemon->stop();
 	}
 
 	/**
 	 * Stops the Daemon
+	 *
 	 * @throws \Uecode\DaemonBundle\System\Daemon\Exception
 	 */
-	final protected function stop( )
+	final protected function stop()
 	{
-		if( !$this->daemon->isRunning() )
-		{
+		if ( !$this->daemon->isRunning() ) {
 			throw new Exception( 'Daemon is not running!' );
 		}
-		$this->runEvents( 'shutdown' );
+		$this->runEvents( self::EVENT_STOP );
 		$this->daemon->stop();
 	}
 
-	final protected function test( )
+	final protected function test()
 	{
-		$this->runEvents( 'startup' );
-		$this->runEvents( 'cycleStart' );
-		$this->daemonLogic( );
-		$this->runEvents( 'cycleEnd' );
-		$this->runEvents( 'shutdown' );
+		$this->runEvents( self::EVENT_START );
+		$this->runEvents( self::EVENT_CYCLE_START );
+		$this->daemonLogic();
+		$this->runEvents( self::EVENT_CYCLE_END );
+		$this->runEvents( self::EVENT_STOP );
+	}
+
+	protected function runEvents( $type )
+	{
+		$this->log( "Finding all {$type} events and running them. " );
+		$events = $this->getEvents( $type );
+		foreach ( $events as $name => $event ) {
+			$this->log( "Running the `{$name}` {$type} event. " );
+			if( $event instanceof \Closure ) {
+				$event( $this );
+			} else {
+				call_user_func_array( $event, [ $this ] );
+			}
+		}
+	}
+
+	protected function log( $content = '', $level = 'info' )
+	{
+		if ( null !== $this->test ) {
+			$this->getOutput()->writeln( $content );
+		}
+		$this->container->get( 'logger' )->$level( $content );
 	}
 
 	/**
-	 * Gets a service by id.
-	 *
-	 * @param string $id The service id
-	 *
-	 * @return object The service
+	 * @return OutputInterface
 	 */
-	protected function get($id)
+	public function getOutput()
 	{
-		return $this->container->get($id);
-	}
-
-	/**
-	 * @param InputInterface $input
-	 */
-	public function setInput( InputInterface $input )
-	{
-		$this->input = $input;
-	}
-
-	/**
-	 * @return InputInterface
-	 */
-	public function getInput()
-	{
-		return $this->input;
+		return $this->output;
 	}
 
 	/**
@@ -300,17 +298,38 @@ abstract class ExtendCommand extends ContainerAwareCommand
 	}
 
 	/**
-	 * @return OutputInterface
+	 * Gets an array of events for the given type
+	 *
+	 * @param string $type Type of events, EVENT_START, EVENT_CYCLE_START, EVENT_CYCLE_STOP, EVENT_STOP right now
+	 *
+	 * @return \Closure[]|callable[]
 	 */
-	public function getOutput()
+	protected function getEvents( $type )
 	{
-		return $this->output;
+		return $this->events[ $type ];
 	}
 
-
+	/**
+	 * Sets the events for the command
+	 */
+	protected function setEvents()
+	{
+	}
 
 	/**
 	 * Daemon Logic Container
 	 */
-	abstract protected function daemonLogic( );
+	abstract protected function daemonLogic();
+
+	/**
+	 * Gets a service by id.
+	 *
+	 * @param string $id The service id
+	 *
+	 * @return object The service
+	 */
+	protected function get( $id )
+	{
+		return $this->container->get( $id );
+	}
 }
