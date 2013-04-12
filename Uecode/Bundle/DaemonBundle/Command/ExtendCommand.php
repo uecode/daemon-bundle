@@ -60,6 +60,11 @@ abstract class ExtendCommand extends ContainerAwareCommand
 	protected $output;
 
 	/**
+     * @var array
+	 */
+	protected $events;
+
+	/**
 	 * Configures the command
 	 */
 	final protected function configure()
@@ -84,6 +89,66 @@ abstract class ExtendCommand extends ContainerAwareCommand
 	 * Set the options for the command
 	 */
 	protected function setOptions(){}
+
+	/**
+	 * Sets the events for the command
+	 */
+	protected function setEvents(){}
+
+	/**
+	 * Adds an event to the command
+	 *
+	 * @param string $type Type of the event, startup, cycle, or shutdown right now
+	 * @param string $name Name of the event
+	 * @param \Closure|callable $function
+	 *
+	 * @throws \Exception Throws an exception on bad arguments
+	 */
+	protected function addEvent( $type, $name, $function )
+	{
+		if( is_callable( $function ) || $function instanceof \Closure ) {
+			if( is_string( $name ) ) {
+				$this->events[$type ][ $name ] = $function;
+			} else {
+				throw new \Exception( "Name passed isn't a string. " );
+			}
+		} else {
+			throw new \Exception( "Function passed is not a callable or a closure. " );
+		}
+	}
+
+	/**
+	 * Gets an array of events for the given type
+	 *
+	 * @param string $type Type of events, startup, cycleStart, cycleEnd, or shutdown right now
+	 *
+	 * @return \Closure[]|callable[]
+	 */
+	protected function getEvents( $type )
+	{
+		return $this->events[ $type ];
+	}
+
+	protected function runEvents( $type )
+	{
+		$this->log( "Finding all {$type} events and running them. " );
+		$events = $this->getEvents( $type );
+		foreach( $events as $name => $event ) {
+			$this->log( "Running the `{$name}` {$type} event. " );
+			$event( $this );
+		}
+	}
+
+	/**
+	 * Removes the named event for a given type.
+	 *
+	 * @param string $type Type of the event, startup, cycleStart, cycleEnd, or shutdown right now
+	 * @param string $name Name of the event
+	 */
+	protected function removeEvent( $type, $name )
+	{
+		unset( $this->events[ $type ][ $name ] );
+	}
 
 	protected function log( $content = '', $level = 'info' )
 	{
@@ -138,10 +203,16 @@ abstract class ExtendCommand extends ContainerAwareCommand
 		}
 
 		$this->daemon->start();
+
+		$this->runEvents( 'startup' );
+
 		while ( $this->daemon->isRunning() ) {
 			// Do stuff here
+			$this->runEvents( 'cycleStart' );
 			$this->daemonLogic( );
+			$this->runEvents( 'cycleEnd' );
 		}
+		$this->runEvents( 'shutdown' );
 		$this->daemon->stop();
 
 	}
@@ -158,10 +229,14 @@ abstract class ExtendCommand extends ContainerAwareCommand
 		}
 
 		$this->daemon->restart();
+		$this->runEvents( 'startup' );
 		while ( $this->daemon->isRunning() ) {
 			// Do stuff here
+			$this->runEvents( 'cycleStart' );
 			$this->daemonLogic( );
+			$this->runEvents( 'cycleEnd' );
 		}
+		$this->runEvents( 'shutdown' );
 		$this->daemon->stop();
 	}
 
@@ -175,12 +250,17 @@ abstract class ExtendCommand extends ContainerAwareCommand
 		{
 			throw new Exception( 'Daemon is not running!' );
 		}
+		$this->runEvents( 'shutdown' );
 		$this->daemon->stop();
 	}
 
 	final protected function test( )
 	{
+		$this->runEvents( 'startup' );
+		$this->runEvents( 'cycleStart' );
 		$this->daemonLogic( );
+		$this->runEvents( 'cycleEnd' );
+		$this->runEvents( 'shutdown' );
 	}
 
 	/**
