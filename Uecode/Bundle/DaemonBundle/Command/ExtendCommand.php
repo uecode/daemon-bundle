@@ -268,7 +268,7 @@ abstract class ExtendCommand extends ContainerAwareCommand
 			if( $event instanceof \Closure ) {
 				$event( $this );
 			} else {
-				call_user_func_array( $event, [ $this ] );
+				call_user_func_array( $event, array( $this ) );
 			}
 		}
 	}
