@@ -1,6 +1,5 @@
 {
 	"name":        "uecode/daemon-bundle",
-	"version":     "0.1.1",
 	"type":        "library",
 	"description": "Symfony2 Daemon Bundle",
 	"keywords":    ["php", "daemon" ],
