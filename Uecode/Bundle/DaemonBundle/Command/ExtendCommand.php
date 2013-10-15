@@ -306,7 +306,7 @@ abstract class ExtendCommand extends ContainerAwareCommand
 	 */
 	protected function getEvents( $type )
 	{
-		return $this->events[ $type ];
+		return array_key_exists( $type, $this->events ) ? $this->events[ $type ] : array();
 	}
 
 	/**
