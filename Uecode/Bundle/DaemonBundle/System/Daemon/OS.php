@@ -130,14 +130,14 @@ class OS
 
             // What's the most specific OS?
             // e.g. Ubuntu > Debian > Linux
-            $use_name = System_Daemon_OS::_mostSpecific($driversValid);
+            $use_name = \System_Daemon_OS::_mostSpecific($driversValid);
         }
 
         // If forced driver wasn't found, retry to autodetect it
         if (!isset($drivers[$use_name])) {
             // Make sure we don't build a loop
             if (!$retried) {
-                $obj           = System_Daemon_OS::factory(false, true);
+                $obj           = \System_Daemon_OS::factory(false, true);
                 $obj->errors[] = "Unable to use driver: ".$force_os." falling ".
                     "back to autodetection.";
             } else {
@@ -220,8 +220,8 @@ class OS
         $tried_dirs = array();
 
         if (class_exists('PEAR_Config', true)) {
-            $config = PEAR_Config::singleton();
-            if (PEAR::isError($config)) {
+            $config = \PEAR_Config::singleton();
+            if (\PEAR::isError($config)) {
                 $this->errors[] = $config->getMessage();
                 return false;
             }
@@ -287,7 +287,7 @@ class OS
 
         return $path;
     }
-    
+
     /**
      * A 'better' is_writable. Taken from PHP.NET comments:
      * http://nl.php.net/manual/en/function.is-writable.php#73596
@@ -297,7 +297,7 @@ class OS
      * see http://bugs.php.net/bug.php?id=30931
      *
      * @param string $path Path to test
-     * 
+     *
      * @return boolean
      */
     public static function isWritable($path)
@@ -470,7 +470,7 @@ class OS
         $required_props = array(
             "appName",
             "appExecutable",
-            "appDescription", 
+            "appDescription",
             "appDir",
             "authorName",
             "authorEmail"
