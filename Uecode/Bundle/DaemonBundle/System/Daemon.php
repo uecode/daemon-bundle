@@ -520,7 +520,7 @@ class Daemon
 
 			if ( false === class_exists( 'Exception', true ) ) {
 				// PEAR_Exception is OK. PEAR was found already.
-				throw new PEAR_Exception( 'Class Exception not found' );
+				throw new \PEAR_Exception( 'Class Exception not found' );
 			}
 		}
 
