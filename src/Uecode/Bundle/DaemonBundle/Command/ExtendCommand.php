@@ -66,7 +66,7 @@ abstract class ExtendCommand extends ContainerAwareCommand
 	/**
 	 * @var array
 	 */
-	protected $events;
+	protected $events = array();
 
 	/**
 	 * @var bool
@@ -314,6 +314,7 @@ abstract class ExtendCommand extends ContainerAwareCommand
 	 */
 	protected function setEvents()
 	{
+		$this->events = array();
 	}
 
 	/**
