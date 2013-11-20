@@ -68,7 +68,17 @@ abstract class ExtendCommand extends ContainerAwareCommand
 	 */
 	protected $events;
 
-	/**
+    /**
+     * @var array
+     */
+    protected $methods = array(
+        'start',
+        'stop',
+        'restart',
+        'test'
+    );
+
+    /**
 	 * @var bool
 	 */
 	private $test = false;
@@ -98,7 +108,7 @@ abstract class ExtendCommand extends ContainerAwareCommand
 			->setName( $this->name )
 			->setDescription( $this->description )
 			->setHelp( $this->help )
-			->addArgument( 'method', InputArgument::REQUIRED, 'start|stop|restart|test' );
+			->addArgument( 'method', InputArgument::REQUIRED, implode('|', $this->methods) );
 
 		$this->setArguments();
 		$this->setOptions();
@@ -130,8 +140,8 @@ abstract class ExtendCommand extends ContainerAwareCommand
 	protected function execute( InputInterface $input, OutputInterface $output )
 	{
 		$method = $input->getArgument( 'method' );
-		if ( !in_array( $method, array( 'start', 'stop', 'restart', 'test' ) ) ) {
-			throw new \Exception( 'Method must be `start`, `stop`, `restart`, or `test`' );
+		if ( !in_array( $method, $this->methods ) ) {
+			throw new \Exception( sprintf('Method must be one of: %s', implode(', ', $this->methods)) );
 		}
 		$this->setInput( $input );
 		$this->setOutput( $output );
