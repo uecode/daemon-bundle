@@ -142,3 +142,7 @@ Once you have Daemonized your symfony Console Commands, you can simply run them 
     aequasi@ue:~/example$ php app/console queue:stop
 
     aequasi@ue:~/example$ php app/console queue:restart
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/uecode/daemon-bundle/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
