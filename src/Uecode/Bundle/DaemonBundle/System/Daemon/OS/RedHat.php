@@ -20,6 +20,7 @@ use Uecode\Bundle\DaemonBundle\System\Daemon\OS\Linux;
 
 class RedHat extends Linux
 {
+
     /**
      * On Linux, a distro-specific version file is often telling us enough
      *
@@ -57,5 +58,4 @@ class RedHat extends Linux
         '@pid_file@'     => '{PROPERTIES.appPidLocation}',
         '@chkconfig@'    => '{PROPERTIES.appChkConfig}',
     );
-
 }

@@ -1,43 +1,43 @@
 {
-	"name":        "uecode/daemon-bundle",
-	"type":        "library",
-	"description": "Symfony2 Daemon Bundle",
-	"keywords":    ["php", "daemon" ],
-	"homepage":    "https://github.com/uecode/daemon-bundle",
-	"license":     "MIT",
-	"authors":     [
-		{
-			"name":     "Aaron Scherer",
-			"email":    "aequasi@gmail.com",
-			"role":     "developer",
-			"homepage": "https://github.com/aequasi"
-		},
-    {
-        "name":     "Michał Matulka",
-        "email":    "therealmikz@gmail.com",
-        "role":     "developer",
-        "homepage": "https://github.com/therealmikz"
-    }
-	],
-	"support":     {
-		"email": "aaron@undergroundelephant.com"
-	},
-	"require":     {
-		"php":                          ">=5.3.0",
-		"ext-json":                     "*",
-       		"uecode/daemon":         "dev-master",
-       		"uecode/uecode-bundle":         "dev-master"
-	},
-	"require-dev": {
-		"symfony/symfony": "dev-master"
-	},
-	"suggest":     {
-		"monolog/monolog": "Allows more advanced logging of the application flow",
-		"react/react":     "Enables react support - use ReactCommand instead of ExtendCommand"
-	},
-    "autoload":    {
+    "name": "uecode/daemon-bundle",
+    "type": "library",
+    "description": "Symfony2 Daemon Bundle",
+    "keywords": ["php", "daemon"],
+    "homepage": "https://github.com/uecode/daemon-bundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Aaron Scherer",
+            "email": "aequasi@gmail.com",
+            "role": "developer",
+            "homepage": "https://github.com/aequasi"
+        },
+        {
+            "name": "Michał Matulka",
+            "email": "therealmikz@gmail.com",
+            "role": "developer",
+            "homepage": "https://github.com/therealmikz"
+        }
+    ],
+    "support": {
+        "email": "aaron@undergroundelephant.com"
+    },
+    "require": {
+        "php": ">=5.3.0",
+        "ext-json": "*",
+        "uecode/daemon": "dev-master",
+        "uecode/uecode-bundle": "dev-master"
+    },
+    "require-dev": {
+        "symfony/symfony": "dev-master"
+    },
+    "suggest": {
+        "monolog/monolog": "Allows more advanced logging of the application flow",
+        "react/react": "Enables react support - use ReactCommand instead of ExtendCommand"
+    },
+    "autoload": {
         "psr-0": {
-            "": "src"
+            "Uecode\\Bundle\\DaemonBundle": "src"
         }
     }
 }

@@ -16,18 +16,19 @@ use Uecode\Bundle\DaemonBundle\DependencyInjection\Compiler\InitPass;
  */
 class DaemonExtension extends Extension
 {
-	private $defaultUser = null;
 
-	public function load( array $configs, ContainerBuilder $container )
-	{
-		$loader = new Loader\YamlFileLoader( $container, new FileLocator( __DIR__ . '/../Resources/config' ) );
-		$loader->load( 'services.yml' );
+    private $defaultUser = null;
 
-		$container->getParameter( 'uecode.daemon' );
-	}
+    public function load(array $configs, ContainerBuilder $container)
+    {
+        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader->load('services.yml');
 
-	public function getXsdValidationBasePath()
-	{
-		return __DIR__ . '/../Resources/config/';
-	}
+        $container->getParameter('uecode.daemon');
+    }
+
+    public function getXsdValidationBasePath()
+    {
+        return __DIR__ . '/../Resources/config/';
+    }
 }

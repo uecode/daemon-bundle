@@ -13,123 +13,128 @@
 
 namespace Uecode\Bundle\DaemonBundle\Service;
 
-
 use \Uecode\Daemon;
 use \Uecode\Daemon\Exception;
 
 class DaemonService
 {
 
-	private $_config = array();
-	private $_pid;
-	private $_interval = 2;
+    private $_config = array();
 
-	/**
-	 * @var \Uecode\Daemon;
-	 */
-	protected $_daemon;
+    private $_pid;
 
-	public function initialize( $options )
-	{
-		if( empty( $options ) )
-			throw new Exception( 'Daemon instantiated without a config!' );
+    private $_interval = 2;
 
-		$this->setConfig( $options );
-		$this->setPid( $this->getPid() );
-		$this->setDaemon( new Daemon( $this->getConfig( ) ) );
-	}
+    /**
+     * @var \Uecode\Daemon;
+     */
+    protected $_daemon;
 
-	/**
-	 * @param \Uecode\Daemon $daemon
-	 */
-	public function setDaemon( Daemon $daemon )
-	{
-		$this->_daemon = $daemon;
-	}
+    public function initialize($options)
+    {
+        if (empty($options)) {
+            throw new Exception('Daemon instantiated without a config!');
+        }
 
-	/**
-	 * @return \Uecode\Daemon
-	 */
-	public function getDaemon()
-	{
-		return $this->_daemon;
-	}
+        $this->setConfig($options);
+        $this->setPid($this->getPid());
+        $this->setDaemon(new Daemon($this->getConfig()));
+    }
 
-	public function setConfig( $config )
-	{
-		$this->_config = $config;
-	}
+    /**
+     * @param \Uecode\Daemon $daemon
+     */
+    public function setDaemon(Daemon $daemon)
+    {
+        $this->_daemon = $daemon;
+    }
 
-	public function getConfig( $key = '' )
-	{
-		if( $key != '' )
-			return trim( $this->_config[ $key ] );
-		return $this->_config;
-	}
+    /**
+     * @return \Uecode\Daemon
+     */
+    public function getDaemon()
+    {
+        return $this->_daemon;
+    }
 
-	public function getPid()
-	{
-		if( !empty( $this->_pid ) )
-			return $this->_pid;
-		return $this->readFile( $this->getConfig( 'appPidLocation' ) );
-	}
+    public function setConfig($config)
+    {
+        $this->_config = $config;
+    }
 
-	public function setPid( $pid )
-	{
-		$this->_pid = $pid;
-	}
+    public function getConfig($key = '')
+    {
+        if ($key != '') {
+            return trim($this->_config[$key]);
+        }
+        return $this->_config;
+    }
 
-	public function setInterval( $interval )
-	{
-		$this->_interval = $interval;
-	}
+    public function getPid()
+    {
+        if (!empty($this->_pid)) {
+            return $this->_pid;
+        }
+        return $this->readFile($this->getConfig('appPidLocation'));
+    }
 
-	public function getInterval()
-	{
-		return $this->_interval;
-	}
+    public function setPid($pid)
+    {
+        $this->_pid = $pid;
+    }
 
-	public function start()
-	{
-		$daemon = $this->getDaemon();
-		$this->_daemon->setSigHandler( 'SIGTERM',
-			function() use( $daemon )
-			{
-				$daemon->warning( "Received SIGTERM. " );
-				$daemon->stop();
-			}
-		);
+    public function setInterval($interval)
+    {
+        $this->_interval = $interval;
+    }
 
-		$status = $this->_daemon->start();
-		$this->_daemon->info( '{appName} System Daemon Started at %s', date( "F j, Y, g:i a" ) );
-		$this->setPid( $this->getPid() );
-		return $status;
-	}
+    public function getInterval()
+    {
+        return $this->_interval;
+    }
 
-	public function restart()
-	{
-		return $this->_daemon->restart();
-	}
+    public function start()
+    {
+        $daemon = $this->getDaemon();
+        $this->_daemon->setSigHandler(
+            'SIGTERM',
+            function () use ($daemon) {
+                $daemon->warning("Received SIGTERM. ");
+                $daemon->stop();
+            }
+        );
 
-	public function iterate( $sec )
-	{
-		return $this->_daemon->iterate( $sec );
-	}
+        $status = $this->_daemon->start();
+        $this->_daemon->info('{appName} System Daemon Started at %s', date("F j, Y, g:i a"));
+        $this->setPid($this->getPid());
+        return $status;
+    }
 
-	public function isRunning()
-	{
-		return $this->_daemon->isRunning();
-	}
+    public function restart()
+    {
+        return $this->_daemon->restart();
+    }
 
-	public function stop()
-	{
-		return $this->_daemon->stop();
-	}
+    public function iterate($sec)
+    {
+        return $this->_daemon->iterate($sec);
+    }
 
-	private function readFile( $filename, $return = false )
-	{
-		if( !file_exists( $filename ) )
-			return $return;
-		return file_get_contents( $filename );
-	}
+    public function isRunning()
+    {
+        return $this->_daemon->isRunning();
+    }
+
+    public function stop()
+    {
+        return $this->_daemon->stop();
+    }
+
+    private function readFile($filename, $return = false)
+    {
+        if (!file_exists($filename)) {
+            return $return;
+        }
+        return file_get_contents($filename);
+    }
 }

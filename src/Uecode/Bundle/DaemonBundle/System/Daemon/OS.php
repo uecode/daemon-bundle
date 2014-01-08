@@ -17,13 +17,13 @@ namespace Uecode\Bundle\DaemonBundle\System\Daemon;
 
 class OS
 {
+
     /**
      * Holds errors
      *
      * @var array
      */
     public $errors = array();
-
 
     /**
      * Template path
@@ -54,8 +54,6 @@ class OS
      */
     protected $_osDetails = array();
 
-
-
     /**
      * Constructor
      * Only ran by instantiated OS Drivers
@@ -67,7 +65,7 @@ class OS
 
         // Get ancestors
         $ancs = OS::_getAncestors($this);
-        foreach ($ancs as $i=>$anc) {
+        foreach ($ancs as $i => $anc) {
             $ancs[$i] = OS::_getShortHand($anc);
         }
 
@@ -80,8 +78,8 @@ class OS
      * Loads all the drivers and returns the one for the most specifc OS
      *
      * @param mixed   $force_os boolean or string when you want to enforce an OS
-     * for testing purposes. CAN BE VERY DANGEROUS IF WRONG OS IS SPECIFIED!
-     * Will otherwise autodetect OS.
+     *                          for testing purposes. CAN BE VERY DANGEROUS IF WRONG OS IS SPECIFIED!
+     *                          Will otherwise autodetect OS.
      * @param boolean $retried  used internally to find out wether we are retrying
      *
      * @return object
@@ -93,11 +91,11 @@ class OS
         $class_prefix = "System_Daemon_OS_";
 
         // Load all drivers
-        $driver_dir = realpath(dirname(__FILE__)."/OS");
-        foreach (glob($driver_dir."/*.php") as $driver_path) {
+        $driver_dir = realpath(dirname(__FILE__) . "/OS");
+        foreach (glob($driver_dir . "/*.php") as $driver_path) {
             // Set names
             $driver = basename($driver_path, ".php");
-            $class  = $class_prefix.$driver;
+            $class  = $class_prefix . $driver;
 
             // Only do this for real drivers
             if ($driver == "Exception" || !is_file($driver_path)) {
@@ -106,7 +104,7 @@ class OS
 
             // Let SPL include & load the driver or Report errors
             if (!class_exists($class, true)) {
-                $this->errors[] = "Class ".$class." does not exist";
+                $this->errors[] = "Class " . $class . " does not exist";
                 return false;
             }
 
@@ -117,11 +115,11 @@ class OS
         // Determine which one to use
         if ($force_os !== false) {
             // Let's use the Forced OS. This could be dangerous
-            $use_name = $class_prefix.$force_os;
+            $use_name = $class_prefix . $force_os;
         } else {
             // What OSes are valid for this system?
             // e.g. Debian makes Linux valid as well
-            foreach ($drivers as $class=>$obj) {
+            foreach ($drivers as $class => $obj) {
                 // Save in Installed container
                 if (call_user_func(array($obj, "isInstalled"))) {
                     $driversValid[$class] = $obj;
@@ -138,8 +136,7 @@ class OS
             // Make sure we don't build a loop
             if (!$retried) {
                 $obj           = \System_Daemon_OS::factory(false, true);
-                $obj->errors[] = "Unable to use driver: ".$force_os." falling ".
-                    "back to autodetection.";
+                $obj->errors[] = "Unable to use driver: " . $force_os . " falling " . "back to autodetection.";
             } else {
                 $obj = false;
             }
@@ -149,8 +146,6 @@ class OS
 
         return $obj;
     }
-
-
 
     /**
      * Determines wether the system is compatible with this OS
@@ -227,8 +222,7 @@ class OS
             }
 
             $try_dir = realpath(
-                $config->get('data_dir').
-                '/System_Daemon/data'
+                $config->get('data_dir') . '/System_Daemon/data'
             );
             if (!is_dir($try_dir)) {
                 $tried_dirs[] = $try_dir;
@@ -238,7 +232,7 @@ class OS
         }
 
         if (!$dir) {
-            $try_dir = realpath(dirname(__FILE__).'/../../data');
+            $try_dir = realpath(dirname(__FILE__) . '/../../data');
             if (!is_dir($try_dir)) {
                 $tried_dirs[] = $try_dir;
             } else {
@@ -247,8 +241,7 @@ class OS
         }
 
         if (!$dir) {
-            $this->errors[] = 'No data dir found in either: '.
-            implode(' or ', $tried_dirs);
+            $this->errors[] = 'No data dir found in either: ' . implode(' or ', $tried_dirs);
             return false;
         }
 
@@ -269,19 +262,18 @@ class OS
             return false;
         }
 
-        $path = $this->_autoRunDir."/".$appName;
+        $path = $this->_autoRunDir . "/" . $appName;
 
         // Path exists
         if (!is_dir($dir = dirname($path))) {
-            $this->errors[] = "Directory: '".$dir."' does not exist. ".
-                "How can this be a correct path?";
+            $this->errors[] = "Directory: '" . $dir . "' does not exist. " . "How can this be a correct path?";
             return false;
         }
 
         // Is writable?
         if (!self::isWritable($dir)) {
-            $this->errors[] = "Directory: '".$dir."' is not writable. ".
-                "Maybe run as root (now: " . getmyuid() . ")?";
+            $this->errors[] =
+                "Directory: '" . $dir . "' is not writable. " . "Maybe run as root (now: " . getmyuid() . ")?";
             return false;
         }
 
@@ -302,11 +294,13 @@ class OS
      */
     public static function isWritable($path)
     {
-        if ($path{strlen($path)-1} === '/') {
+        if ($path{strlen($path) - 1} === '/') {
             //// recursively return a temporary file path
-            return self::isWritable($path.uniqid(mt_rand()).'.tmp');
-        } else if (is_dir($path)) {
-            return self::isWritable($path.'/'.uniqid(mt_rand()).'.tmp');
+            return self::isWritable($path . uniqid(mt_rand()) . '.tmp');
+        } else {
+            if (is_dir($path)) {
+                return self::isWritable($path . '/' . uniqid(mt_rand()) . '.tmp');
+            }
         }
         // check tmp file for read/write capabilities
         if (($rm = file_exists($path))) {
@@ -341,8 +335,7 @@ class OS
         }
 
         if (!file_exists($path)) {
-            $this->errors[] = "autoRunTemplatePath: ".
-            $path." does not exist";
+            $this->errors[] = "autoRunTemplatePath: " . $path . " does not exist";
             return false;
         }
 
@@ -363,9 +356,9 @@ class OS
         if (($template = $this->getAutoRunTemplate($properties)) === false) {
             return false;
         }
-        if (!$this->_autoRunTemplateReplace
-            || !is_array($this->_autoRunTemplateReplace)
-            || !count($this->_autoRunTemplateReplace)
+        if (!$this->_autoRunTemplateReplace ||
+            !is_array($this->_autoRunTemplateReplace) ||
+            !count($this->_autoRunTemplateReplace)
         ) {
             $this->errors[] = "No autoRunTemplateReplace found";
             return false;
@@ -438,25 +431,18 @@ class OS
 
         // Write
         if (!file_put_contents($path, $body)) {
-            $this->errors[] =  "startup file: '".
-            $path."' cannot be ".
-                "written to. Check the permissions";
+            $this->errors[] = "startup file: '" . $path . "' cannot be " . "written to. Check the permissions";
             return false;
         }
 
         // Chmod
         if (!chmod($path, 0777)) {
-            $this->errors[] =  "startup file: '".
-            $path."' cannot be ".
-                "chmodded. Check the permissions";
+            $this->errors[] = "startup file: '" . $path . "' cannot be " . "chmodded. Check the permissions";
             return false;
         }
 
-
         return $path;
     }
-
-
 
     /**
      * Sets daemon specific properties
@@ -478,8 +464,7 @@ class OS
 
         // Valid array?
         if (!is_array($properties) || !count($properties)) {
-            $this->errors[] = "No properties to ".
-                "forge init.d script";
+            $this->errors[] = "No properties to " . "forge init.d script";
             return false;
         }
 
@@ -487,36 +472,39 @@ class OS
         $success = true;
         foreach ($required_props as $required_prop) {
             if (!isset($properties[$required_prop])) {
-                $this->errors[] = "Cannot forge an ".
-                    "init.d script without a valid ".
-                    "daemon property: ".$required_prop;
+                $this->errors[] =
+                    "Cannot forge an " . "init.d script without a valid " . "daemon property: " . $required_prop;
                 $success        = false;
                 continue;
             }
         }
 
         // Path to daemon
-        $daemon_filepath = $properties["appDir"] . "/" .
-            $properties["appExecutable"];
+        $daemon_filepath = $properties["appDir"] . "/" . $properties["appExecutable"];
 
         // Path to daemon exists?
         if (!file_exists($daemon_filepath)) {
-            $this->errors[] = "unable to forge startup script for non existing ".
-                "daemon_filepath: ".$daemon_filepath.", try setting a valid ".
+            $this->errors[] =
+                "unable to forge startup script for non existing " .
+                "daemon_filepath: " .
+                $daemon_filepath .
+                ", try setting a valid " .
                 "appDir or appExecutable";
             $success        = false;
         }
 
         // Path to daemon is executable?
         if (!is_executable($daemon_filepath)) {
-            $this->errors[] = "unable to forge startup script. ".
-                "daemon_filepath: ".$daemon_filepath.", needs to be executable ".
+            $this->errors[] =
+                "unable to forge startup script. " .
+                "daemon_filepath: " .
+                $daemon_filepath .
+                ", needs to be executable " .
                 "first";
             $success        = false;
         }
 
         return $success;
-
     }
 
     /**
@@ -549,7 +537,7 @@ class OS
      */
     protected function _getShortHand($class)
     {
-        if (!is_string($class) || ! $class ) {
+        if (!is_string($class) || !$class) {
             return false;
         }
         $parts = explode("_", $class);

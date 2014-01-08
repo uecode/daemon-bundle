@@ -12,33 +12,32 @@ namespace Uecode\Bundle\DaemonBundle\System\Daemon\OS;
  * @license   http://www.opensource.org/licenses/bsd-license.php New BSD Licence
  * @version   SVN: Release: $Id$
  * @link      http://trac.plutonia.nl/projects/system_daemon
- * * 
+ * *
  */
 
 use Uecode\Bundle\DaemonBundle\System\Daemon\OS;
- 
+
 class BSD extends OS
 {
+
     /**
      * Template path
      *
      * @var string
      */
     protected $_autoRunTemplatePath = '#datadir#/template_BSD';
-    
+
     /**
      * Determines wether the system is compatible with this OS
      *
      * @return boolean
      */
-    public function isInstalled() 
+    public function isInstalled()
     {
-        if (!stristr(PHP_OS, "Darwin")
-            && !stristr(PHP_OS, "BSD")) {
+        if (!stristr(PHP_OS, "Darwin") && !stristr(PHP_OS, "BSD")) {
             return false;
         }
-        
+
         return true;
     }
-    
 }

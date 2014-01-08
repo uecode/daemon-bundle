@@ -20,6 +20,7 @@ use Uecode\Bundle\DaemonBundle\System\Daemon\OS\RedHat;
 
 class Fedora extends RedHat
 {
+
     /**
      * On Linux, a distro-specific version file is often telling us enough
      *
@@ -50,12 +51,11 @@ class Fedora extends RedHat
     protected $_autoRunTemplateReplace = array(
         "@author_name@"  => "{PROPERTIES.authorName}",
         "@author_email@" => "{PROPERTIES.authorEmail}",
-        '@name@'      => '{PROPERTIES.appName}',
-        '@desc@'      => '{PROPERTIES.appDescription}',
-        '@bin_file@'  => '{PROPERTIES.appDir}/{PROPERTIES.appExecutable}',
-        '@bin_name@'  => '{PROPERTIES.appExecutable}',
-        '@pid_file@'  => '{PROPERTIES.appPidLocation}',
-        '@chkconfig@' => '{PROPERTIES.appChkConfig}',
+        '@name@'         => '{PROPERTIES.appName}',
+        '@desc@'         => '{PROPERTIES.appDescription}',
+        '@bin_file@'     => '{PROPERTIES.appDir}/{PROPERTIES.appExecutable}',
+        '@bin_name@'     => '{PROPERTIES.appExecutable}',
+        '@pid_file@'     => '{PROPERTIES.appPidLocation}',
+        '@chkconfig@'    => '{PROPERTIES.appChkConfig}',
     );
-
 }

@@ -9,9 +9,9 @@ use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 class DaemonBundle extends Bundle
 {
 
-	public function build(ContainerBuilder $container)
-	{
-		parent::build($container);
-		$container->addCompilerPass(new InitPass(), PassConfig::TYPE_OPTIMIZE);
-	}
+    public function build(ContainerBuilder $container)
+    {
+        parent::build($container);
+        $container->addCompilerPass(new InitPass(), PassConfig::TYPE_OPTIMIZE);
+    }
 }
