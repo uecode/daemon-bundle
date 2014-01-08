@@ -30,14 +30,6 @@ abstract class ReactCommand extends AbstractCommand
     private function initLoop()
     {
         $this->eventLoop = EventLoop\Factory::create();
-        $this->eventLoop->addPeriodicTimer(
-            0.1,
-            function () {
-                $this->runEvents(self::EVENT_CYCLE_START);
-                $this->daemonLogic();
-                $this->runEvents(self::EVENT_CYCLE_END);
-            }
-        );
         $this->prepareLoop($this->eventLoop);
 
         return $this->eventLoop;
