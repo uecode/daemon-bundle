@@ -301,7 +301,7 @@ abstract class ExtendCommand extends ContainerAwareCommand
 
 	protected function log( $content = '', $level = 'info' )
 	{
-		if ( null !== $this->test ) {
+		if ( true === $this->test ) {
 			$this->getOutput()->writeln( $content );
 		}
 		$this->container->get( 'logger' )->$level( $content );
