@@ -11,7 +11,13 @@
 			"email":    "aequasi@gmail.com",
 			"role":     "developer",
 			"homepage": "https://github.com/aequasi"
-		}
+		},
+    {
+        "name":     "Michał Matulka",
+        "email":    "therealmikz@gmail.com",
+        "role":     "developer",
+        "homepage": "https://github.com/therealmikz"
+    }
 	],
 	"support":     {
 		"email": "aaron@undergroundelephant.com"
@@ -26,7 +32,8 @@
 		"symfony/symfony": "dev-master"
 	},
 	"suggest":     {
-		"monolog/monolog": "Allows more advanced logging of the application flow"
+		"monolog/monolog": "Allows more advanced logging of the application flow",
+		"react/react":     "Enables react support - use ReactCommand instead of ExtendCommand"
 	},
     "autoload":    {
         "psr-0": {
