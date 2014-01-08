@@ -1,8 +1,10 @@
 <?php
+/**
+ * @author Michał Matulka <therealmikz@gmail.com>
+ * @date Jan 8, 2014
+ */
 
 namespace Uecode\Bundle\DaemonBundle\Command;
-
-//use Uecode\Bundle\DaemonBundle\Command\ExtendCommand;
 
 use React\EventLoop;
 
