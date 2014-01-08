@@ -26,7 +26,8 @@
 		"symfony/symfony": "dev-master"
 	},
 	"suggest":     {
-		"monolog/monolog": "Allows more advanced logging of the application flow"
+		"monolog/monolog": "Allows more advanced logging of the application flow",
+		"react/react":     "Enables react support - use ReactCommand instead of ExtendCommand"
 	},
     "autoload":    {
         "psr-0": {
