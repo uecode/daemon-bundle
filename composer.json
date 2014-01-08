@@ -11,7 +11,13 @@
 			"email":    "aequasi@gmail.com",
 			"role":     "developer",
 			"homepage": "https://github.com/aequasi"
-		}
+		},
+    {
+        "name":     "Michał Matulka",
+        "email":    "therealmikz@gmail.com",
+        "role":     "developer",
+        "homepage": "https://github.com/therealmikz"
+    }
 	],
 	"support":     {
 		"email": "aaron@undergroundelephant.com"
