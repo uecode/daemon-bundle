@@ -4,7 +4,7 @@
     "description": "Symfony2 Daemon Bundle",
     "keywords": ["php", "daemon"],
     "homepage": "https://github.com/uecode/daemon-bundle",
-    "license": "MIT",
+    "license": "Apache 2.0",
     "authors": [
         {
             "name": "Aaron Scherer",

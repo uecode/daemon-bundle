@@ -14,10 +14,8 @@ namespace Uecode\Bundle\DaemonBundle\System\Daemon;
  * @link      http://trac.plutonia.nl/projects/system_daemon
  *
  */
-
 class Options
 {
-
     /**
      * Keep track of active state for all Options
      *

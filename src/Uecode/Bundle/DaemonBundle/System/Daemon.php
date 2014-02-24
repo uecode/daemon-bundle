@@ -3,7 +3,7 @@
 namespace Uecode\Bundle\DaemonBundle\System;
 
 /**
- * Daemon. Create daemons with practicle functions
+ * Daemon. Create daemons with practical functions
  * like Daemon::start()
  *
  * Requires PHP build with --enable-cli --with-pcntl.
@@ -25,7 +25,6 @@ use Uecode\Bundle\DaemonBundle\System\Daemon\OS;
 
 class Daemon
 {
-
     // Make these corresponding with PEAR
     // Ensures compatibility while maintaining independency
 
@@ -79,14 +78,14 @@ class Daemon
     /**
      * Whether the our daemon is being killed
      *
-     * @var boolean
+     * @var Boolean
      */
     static protected $_isDying = false;
 
     /**
      * Whether the current process is a forked child
      *
-     * @var boolean
+     * @var Boolean
      */
     static protected $_processIsChild = false;
 
@@ -142,14 +141,14 @@ class Daemon
     /**
      * Holds Option Object
      *
-     * @var mixed object or boolean
+     * @var mixed object or Boolean
      */
     static protected $_optObj = false;
 
     /**
      * Holds OS Object
      *
-     * @var mixed object or boolean
+     * @var mixed object or Boolean
      */
     static protected $_osObj = false;
 
@@ -459,7 +458,7 @@ class Daemon
     /**
      * Spawn daemon process.
      *
-     * @return boolean
+     * @return Boolean
      * @see iterate()
      * @see stop()
      * @see autoload()
@@ -633,7 +632,7 @@ class Daemon
      * @param string $signal  Signal constant (e.g. SIGHUP)
      * @param mixed  $handler Which handler to call on signal
      *
-     * @return boolean
+     * @return Boolean
      * @see $_sigHandlers
      */
     static public function setSigHandler($signal, $handler)
@@ -661,7 +660,7 @@ class Daemon
      * @param string $name  Name of the Option
      * @param mixed  $value Value of the Option
      *
-     * @return boolean
+     * @return Boolean
      */
     static public function setOption($name, $value)
     {
@@ -678,7 +677,7 @@ class Daemon
      *
      * @param array $use_options Array with Options
      *
-     * @return boolean
+     * @return Boolean
      */
     static public function setOptions($use_options)
     {
@@ -745,7 +744,7 @@ class Daemon
      * @param string  $errfile File
      * @param integer $errline Line
      *
-     * @return boolean
+     * @return Boolean
      */
     static public function phpErrors($errno, $errstr, $errfile, $errline)
     {
@@ -835,7 +834,7 @@ class Daemon
     /**
      * Logging shortcut
      *
-     * @return boolean
+     * @return Boolean
      */
     public static function emerg()
     {
@@ -849,7 +848,7 @@ class Daemon
     /**
      * Logging shortcut
      *
-     * @return boolean
+     * @return Boolean
      */
     public static function crit()
     {
@@ -863,7 +862,7 @@ class Daemon
     /**
      * Logging shortcut
      *
-     * @return boolean
+     * @return Boolean
      */
     public static function err()
     {
@@ -877,7 +876,7 @@ class Daemon
     /**
      * Logging shortcut
      *
-     * @return boolean
+     * @return Boolean
      */
     public static function warning()
     {
@@ -891,7 +890,7 @@ class Daemon
     /**
      * Logging shortcut
      *
-     * @return boolean
+     * @return Boolean
      */
     public static function notice()
     {
@@ -905,7 +904,7 @@ class Daemon
     /**
      * Logging shortcut
      *
-     * @return boolean
+     * @return Boolean
      */
     public static function info()
     {
@@ -919,7 +918,7 @@ class Daemon
     /**
      * Logging shortcut
      *
-     * @return boolean
+     * @return Boolean
      */
     public static function debug()
     {
@@ -937,7 +936,7 @@ class Daemon
      * @param mixed $level As string or constant
      * @param mixed $str   Message
      *
-     * @return boolean
+     * @return Boolean
      */
     protected static function _ilog($level, $str)
     {
@@ -1000,7 +999,7 @@ class Daemon
      * @param integer $line     What code line the log record is from
      *
      * @throws Exception
-     * @return boolean
+     * @return Boolean
      * @see _logLevels
      * @see logLocation
      */
@@ -1124,9 +1123,9 @@ class Daemon
     /**
      * Uses OS class to write an: 'init.d' script on the filesystem
      *
-     * @param boolean $overwrite May the existing init.d file be overwritten?
+     * @param Boolean $overwrite May the existing init.d file be overwritten?
      *
-     * @return boolean
+     * @return Boolean
      */
     static public function writeAutoRun($overwrite = false)
     {
@@ -1212,7 +1211,7 @@ class Daemon
     /**
      * Whether the class is already running in the background
      *
-     * @return boolean
+     * @return Boolean
      */
     static public function isInBackground()
     {
@@ -1223,7 +1222,7 @@ class Daemon
      * Whether the our daemon is being killed, you might
      * want to include this in your loop
      *
-     * @return boolean
+     * @return Boolean
      */
     static public function isDying()
     {
@@ -1233,7 +1232,7 @@ class Daemon
     /**
      * Check if a previous process with same pidfile was already running
      *
-     * @return boolean
+     * @return Boolean
      */
     static public function isRunning()
     {
@@ -1358,9 +1357,9 @@ class Daemon
      * Determine whether pidfilelocation is valid
      *
      * @param string  $pidFilePath Pid location
-     * @param boolean $log         Allow this function to log directly on error
+     * @param Boolean $log         Allow this function to log directly on error
      *
-     * @return boolean
+     * @return Boolean
      */
     static protected function _isValidPidLocation($pidFilePath, $log = true)
     {
@@ -1389,7 +1388,7 @@ class Daemon
      * @param string  $pidFilePath PID File path
      * @param integer $pid         PID
      *
-     * @return boolean
+     * @return Boolean
      */
     static protected function _writePid($pidFilePath = null, $pid = null)
     {
@@ -1436,7 +1435,7 @@ class Daemon
      * @param string  $dirPath Directory to create
      * @param integer $mode    Umask
      *
-     * @return boolean
+     * @return Boolean
      */
     static protected function _mkdirr($dirPath, $mode)
     {
@@ -1451,7 +1450,7 @@ class Daemon
      * @param integer $gid Group identifier (number)
      * @param integer $uid User identifier (number)
      *
-     * @return boolean
+     * @return Boolean
      */
     static protected function _changeIdentity($gid = 0, $uid = 0)
     {
@@ -1520,7 +1519,7 @@ class Daemon
     /**
      * Fork process and kill parent process, the heart of the 'daemonization'
      *
-     * @return boolean
+     * @return Boolean
      */
     static protected function _fork()
     {
@@ -1561,7 +1560,7 @@ class Daemon
      * Kill the daemon
      * Keep this function as independent from complex logic as possible
      *
-     * @param boolean $restart Whether to restart after die
+     * @param Boolean $restart Whether to restart after die
      *
      * @return void
      */
@@ -1597,7 +1596,7 @@ class Daemon
     /**
      * Sets up OS instance
      *
-     * @return boolean
+     * @return Boolean
      */
     static protected function _osObjSetup()
     {
@@ -1617,7 +1616,7 @@ class Daemon
     /**
      * Sets up Option Object instance
      *
-     * @return boolean
+     * @return Boolean
      */
     static protected function _optionObjSetup()
     {
@@ -1638,9 +1637,9 @@ class Daemon
      * Checks if all the required options are set.
      * Initializes, sanitizes & defaults unset variables
      *
-     * @param boolean $premature Whether to do a premature option init
+     * @param Boolean $premature Whether to do a premature option init
      *
-     * @return mixed integer or boolean
+     * @return mixed integer or Boolean
      */
     static protected function _optionsInit($premature = false)
     {

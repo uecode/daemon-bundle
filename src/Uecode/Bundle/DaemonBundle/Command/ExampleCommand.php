@@ -1,20 +1,16 @@
 <?php
-/**
- * @author Aaron Scherer <aequasi@gmail.com>
- * @date   Oct 12, 2012
- */
+
 namespace Uecode\Bundle\DaemonBundle\Command;
 
-use \Symfony\Component\Console\Input\InputInterface;
-use \Symfony\Component\Console\Output\OutputInterface;
-use \Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Input\InputArgument;
 
 /**
- * Example Command class
+ * @author Aaron Scherer <aequasi@gmail.com>
  */
 class ExampleCommand extends ExtendCommand
 {
-
     protected $name = 'example';
 
     protected $description = 'Starts an example Daemon';

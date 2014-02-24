@@ -1,4 +1,5 @@
 <?php
+
 namespace Uecode\Bundle\DaemonBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -10,7 +11,6 @@ use Symfony\Component\Filesystem\Filesystem;
  */
 class InitPass implements CompilerPassInterface
 {
-
     /**
      * {@inheritDoc}
      */

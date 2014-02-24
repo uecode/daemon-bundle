@@ -1,25 +1,20 @@
 <?php
-/**
- * @author Aaron Scherer <aequasi@gmail.com>
- * @date   Oct 12, 2012
- */
+
 namespace Uecode\Bundle\DaemonBundle\Command;
 
-use \Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use \Symfony\Component\Console\Input\InputInterface;
-use \Symfony\Component\Console\Input\InputArgument;
-use \Symfony\Component\Console\Output\OutputInterface;
-use \Symfony\Component\DependencyInjection\Container;
-
-use \Uecode\Bundle\DaemonBundle\System\Daemon\Exception;
-use \Uecode\Bundle\DaemonBundle\Service\DaemonService;
+use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\DependencyInjection\Container;
+use Uecode\Bundle\DaemonBundle\System\Daemon\Exception;
+use Uecode\Bundle\DaemonBundle\Service\DaemonService;
 
 /**
- * Extendable Command class
+ * @author Aaron Scherer <aequasi@gmail.com>
  */
 abstract class ExtendCommand extends AbstractCommand
 {
-
     final protected function test()
     {
         $this->runEvents(self::EVENT_START);

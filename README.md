@@ -1,5 +1,7 @@
 #Uecode DaemonBundle #
+
 ##Overview##
+
 DaemonBundle is a wrapper for the PEAR library System_Daemon which was created by Kevin Vanzonneveld.
 
 This will enable you to install the symfony bundle and easily convert your Symfony2 console scripts into system daemons.
@@ -9,8 +11,9 @@ pcntl is required to be configured in your PHP binary to use this. On my Ubuntu 
     sudo apt-get install php-5.3-pcntl-zend-server 
 
 ##System_Daemon PEAR package##
-System_Daemon is a PHP class that allows developers to create their own daemon 
-applications on Linux systems. The class is focussed entirely on creating & 
+
+System_Daemon is a PHP class that allows developers to create their own daemon
+applications on Linux systems. The class is focused entirely on creating &
 spawning standalone daemons
 
 More info at:
@@ -37,6 +40,7 @@ Place Uecode\Bundle\Daemonbundle in your src directory and do the following:
 	"uecode/daemon-bundle": "dev-master",
 
 ### appKernel.php ###
+
 Add The DaemonBundle to your kernel bootstrap sequence
 
     public function registerBundles()
@@ -51,7 +55,8 @@ Add The DaemonBundle to your kernel bootstrap sequence
     }
 
 ### config.yml ###
-By Default, system daemons have a sensible configuration. If you need to change any configuration setting , you could do it by adding this configuration to your project config. Only the values that need to be changed should be added, the bundle extension will merge your daemon configs into its defaults. YOU MUST HAVE AT LEAST THIS PIECE TO WORK
+
+By Default, system daemons have a sensible configuration. If you need to change any configuration setting, you could do it by adding this configuration to your project config. Only the values that need to be changed should be added, the bundle extension will merge your daemon configs into its defaults. YOU MUST HAVE AT LEAST THIS PIECE TO WORK
 
     app/config.yml
 
@@ -60,9 +65,10 @@ By Default, system daemons have a sensible configuration. If you need to change 
         daemon:
 
 ### config.yml - Extras ###
+
     app/config.yml
 
-    #UecodeDaemonBundle Configuration Example
+    # UecodeDaemonBundle Configuration Example
     uecode:
         daemon:
             daemons:
@@ -89,9 +95,11 @@ By Default, system daemons have a sensible configuration. If you need to change 
 ##Creating a Daemon##
 
 ##Code##
+
 Make sure you extend \Uecode\Bundle\DaemonBundle\Command\ExtendCommand
 
 	<?php
+
     namespace Uecode\Bundle\DaemonBundle\Command;
 
     use \Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -135,6 +143,7 @@ Make sure you extend \Uecode\Bundle\DaemonBundle\Command\ExtendCommand
     }
 
 ##Usage##
+
 Once you have Daemonized your symfony Console Commands, you can simply run them from the command line like so:
 
     aequasi@ue:~/example$ php app/console queue:start
@@ -145,4 +154,3 @@ Once you have Daemonized your symfony Console Commands, you can simply run them 
 
 
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/uecode/daemon-bundle/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
-

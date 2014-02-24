@@ -1,2 +1,2 @@
-.scope
-.idea
+/vendor
+/composer.lock
