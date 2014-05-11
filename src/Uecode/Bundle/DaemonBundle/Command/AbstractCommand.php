@@ -110,6 +110,7 @@ abstract class AbstractCommand extends ContainerAwareCommand
 
         $this->setArguments();
         $this->setOptions();
+        $this->setEvents();
     }
 
     /**
