@@ -1,12 +1,9 @@
 <?php
-/**
- * @author Michał Matulka <therealmikz@gmail.com>
- * @date   Jan 8, 2014
- */
 
 namespace Uecode\Bundle\DaemonBundle\Command;
 
-use React\EventLoop;
+use React\EventLoop\LoopInterface;
+use React\EventLoop\Factory;
 
 /**
  * Basic ReactPHP support
@@ -15,21 +12,19 @@ use React\EventLoop;
  */
 abstract class ReactCommand extends AbstractCommand
 {
-
     /**
-     * @var EventLoop\LoopInterface
+     * @var \React\EventLoop\LoopInterface
      */
     private $eventLoop;
 
-    abstract protected function prepareLoop(EventLoop\LoopInterface $loop);
+    abstract protected function prepareLoop(LoopInterface $loop);
 
     /**
-     *
-     * @return EventLoop\LoopInterface
+     * @return \React\EventLoop\LoopInterface
      */
     private function initLoop()
     {
-        $this->eventLoop = EventLoop\Factory::create();
+        $this->eventLoop = Factory::create();
         $this->prepareLoop($this->eventLoop);
 
         return $this->eventLoop;

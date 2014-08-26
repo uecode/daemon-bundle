@@ -1,25 +1,20 @@
 <?php
-/**
- * @author Aaron Scherer <aequasi@gmail.com>
- * @date   Oct 12, 2012
- */
+
 namespace Uecode\Bundle\DaemonBundle\Command;
 
-use \Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use \Symfony\Component\Console\Input\InputInterface;
-use \Symfony\Component\Console\Input\InputArgument;
-use \Symfony\Component\Console\Output\OutputInterface;
-use \Symfony\Component\DependencyInjection\Container;
-
-use \Uecode\Bundle\DaemonBundle\System\Daemon\Exception;
-use \Uecode\Bundle\DaemonBundle\Service\DaemonService;
+use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\DependencyInjection\Container;
+use Uecode\Bundle\DaemonBundle\System\Daemon\Exception;
+use Uecode\Bundle\DaemonBundle\Service\DaemonService;
 
 /**
- * Abstract Command class
+ * @author Aaron Scherer <aequasi@gmail.com>
  */
 abstract class AbstractCommand extends ContainerAwareCommand
 {
-
     const EVENT_START = 'EVENT_START';
 
     const EVENT_CYCLE_START = 'EVENT_CYCLE_START';

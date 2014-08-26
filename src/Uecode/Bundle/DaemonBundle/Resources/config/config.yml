@@ -1,4 +1,4 @@
-#UecodeDaemonBundle Configuration Example
+# UecodeDaemonBundle Configuration Example
 uecode.daemon:
     daemons:
         example:

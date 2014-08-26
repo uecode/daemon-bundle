@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Daemon is a php5 wrapper class for the PEAR library System_Daemon
  *
@@ -13,12 +14,11 @@
 
 namespace Uecode\Bundle\DaemonBundle\Service;
 
-use \Uecode\Daemon;
-use \Uecode\Daemon\Exception;
+use Uecode\Daemon;
+use Uecode\Daemon\Exception;
 
 class DaemonService
 {
-
     private $_config = array();
 
     private $_pid;

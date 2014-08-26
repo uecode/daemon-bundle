@@ -3,7 +3,7 @@
 namespace Uecode\Bundle\DaemonBundle\System\Daemon;
 
 /**
- * Operating System focussed functionality.
+ * Operating System focused functionality.
  *
  * @category  System
  * @package   Daemon
@@ -14,7 +14,6 @@ namespace Uecode\Bundle\DaemonBundle\System\Daemon;
  * @link      http://trac.plutonia.nl/projects/system_daemon
  *
  */
-
 class OS
 {
 
@@ -447,7 +446,7 @@ class OS
     /**
      * Sets daemon specific properties
      *
-     * @param array $properties Contains the daemon properties
+     * @param array|Boolean $properties Contains the daemon properties
      *
      * @return array
      */
