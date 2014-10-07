@@ -1,4 +1,10 @@
 #Uecode DaemonBundle #
+
+
+# DEPRECATED / NO LONGER SUPPORTING
+
+Its now pretty easy to daemonize php commands using upstart, or init.d. Please use those instead of this, as you will get a lot more support.
+
 ##Overview##
 DaemonBundle is a wrapper for the PEAR library System_Daemon which was created by Kevin Vanzonneveld.
 
